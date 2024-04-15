@@ -16,7 +16,6 @@ export default function Home() {
 
   return (
     <div className="max-w-5xl mx-auto p-4">
-      <h2 className="text-3xl font-bold">Rehearsal</h2>
       <Link href={`/create`}>Añadir nueva canción</Link>
       <div className="mt-8">
         {
