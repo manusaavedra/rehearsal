@@ -2,26 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+p {
+    @apply relative mb-3
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.chord {
+    @apply absolute top-[-18px] font-semibold text-sm
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+input, select, textarea {
+    @apply border-2 border-gray-200 py-1 px-2 rounded-md
+}
+
+input:focus, select:focus, textarea:focus {
+    @apply outline-none border-2 border-blue-400
+}
+
+.chordline {
+    @apply font-semibold text-xl
+}
+
+.sectionline {
+    @apply font-semibold text-gray-500
+}
+
+button {
+    @apply bg-blue-500 text-white font-semibold rounded-md py-1 px-2
 }
