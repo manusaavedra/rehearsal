@@ -80,8 +80,9 @@ export default function Create() {
     }
 
     return (
-        <main className="min-h-screen grid grid-cols-2 gap-2 p-4">
+        <main className="min-h-screen grid grid-cols-1 sm:grid-cols-2 gap-2 p-4">
             <div>
+                <h2 className="text-3xl mb-4 font-bold">Nueva canción</h2>
                 <div className="mb-6">
                     <div className="mb-2">
                         <input className="w-full" type="text" onChange={title.onChange} value={title.value} placeholder="Titulo de la canción" />
@@ -125,7 +126,7 @@ export default function Create() {
                     <button className="w-full py-2" onClick={handleSave}>Guardar</button>
                 </div>
             </div>
-            <section className="h-full w-full p-4">
+            <section className="h-full hidden sm:block w-full p-4">
                 <Preview
                     title={title.value}
                     artist={artist.value}

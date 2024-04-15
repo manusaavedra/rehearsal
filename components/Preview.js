@@ -37,10 +37,10 @@ export function Preview({ title, artist, sections }) {
     }
 
     return (
-        <div className="pt-10">
+        <div className="pt-10 p-4">
             <div className="mb-6">
                 <h1 className="font-bold text-2xl">{title}</h1>
-                <h4 className="text-xs">{artist}</h4>
+                <h4 className="text-sm">{artist}</h4>
                 <fieldset className="mb-4 py-2 p-2 border rounded-md border-gray-200">
                     <legend className="font-semibold text-center text-sm">Transpose</legend>
                     <div className="flex items-center justify-center gap-2">
