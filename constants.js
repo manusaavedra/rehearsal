@@ -1,0 +1,22 @@
+export const SECTIONS_TITLES = [
+    "INTRO",
+    "VERSO",
+    "VERSO 1",
+    "VERSO 2",
+    "VERSO 3",
+    "VERSO 4",
+    "PRE CORO",
+    "PRE CORO 1",
+    "PRE CORO 2",
+    "CORO",
+    "CORO 1",
+    "CORO 2",
+    "CORO 3",
+    "CORO 4",
+    "PUENTE",
+    "PUENTE 1",
+    "PUENTE 2",
+    "PUENTE 3",
+    "PUENTE 4",
+    "FINAL"
+]
