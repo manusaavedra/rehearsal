@@ -1,15 +1,9 @@
-import { createClient } from "@libsql/client";
-
-const client = createClient({
-    url: process.env.NEXT_TURSO_DATABASE_URL,
-    authToken: process.env.NEXT_TURSO_TOKEN
-})
+import { client } from "@/database"
 
 export async function POST(req) {
     const { id, title, artist, sections } = await req.json()
 
     try {
-
         if (!id) {
             const { rowsAffected, lastInsertRowid } = await client.execute({
                 sql: "INSERT INTO songs (title, artist, sections) VALUES(?, ?, ?)",
@@ -46,11 +40,8 @@ export async function POST(req) {
 }
 
 export async function GET(req) {
-
-    console.log("es get")
-
     try {
-        const { rows } = await client.execute("SELECT * FROM songs")
+        const { rows } = await client.execute("SELECT * FROM songs ORDER BY title ASC")
         return Response.json(rows)
     } catch (error) {
         return Response.json({ error })

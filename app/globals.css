@@ -3,15 +3,11 @@
 @tailwind utilities;
 
 p {
-    @apply relative mb-3
-}
-
-a {
-    @apply text-blue-500 underline
+    @apply relative mb-4
 }
 
 .chord {
-    @apply absolute top-[-18px] font-semibold text-sm
+    @apply absolute top-[-14px] font-bold text-sm font-sans
 }
 
 input, select, textarea {

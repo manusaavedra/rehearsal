@@ -10,7 +10,7 @@ export default function Create({ params }) {
         fetch("/api/songs")
             .then((res) => res.json())
             .then((data) => {
-                const songById = data.find((song) => song.id === parseInt(params.id))
+                const songById = data.find((song) => song.id === params.id)
                 const { sections, ...restSong } = songById
                 const parseSections = JSON.parse(sections) || []
                 console.log({ ...restSong, sections: parseSections })

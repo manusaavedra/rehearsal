@@ -1,28 +1,45 @@
 "use client"
 
 import { useState } from "react";
+import { FiMinus, FiPlus } from "react-icons/fi";
 
 export function Preview({ title, artist, sections }) {
     const [semitone, setSemitone] = useState(0)
 
+    const replaceNumbersWithSuperscripts = (text) => {
+        return text.replace(/[6789]/g, (match) => {
+            const superscripts = {
+                '6': '⁶',
+                '7': '⁷',
+                '8': '⁸',
+                '9': '⁹'
+            }
+            return superscripts[match];
+        })
+    }
+
     const chordFormat = (text, semitones) => {
         const transposeText = text.replace(/\[(.*?)\]/g, (match, chord) => {
-            return "[" + transposeChord(chord, semitones) + "]";
+            return "[" + transposeChord(chord, semitones) + "]"
         });
-        const regex = /\[(.*?)\]/g;
-        let format = String(transposeText).replace(regex, '<span class="chord">$1</span>')
-            .replace(/\n/g, '</p><p>')
-            .replace(/7/g, '⁷')
 
-        format = `<p>${format}</p>`
+        const replacedText = replaceNumbersWithSuperscripts(transposeText)
+
+        const regex = /\[(.*?)\]/g
+        let format = String(replacedText)
+            .replace(regex, '<span class="chord">$1</span>')
+            .replace(/\n/g, '</p><p>')
+
+        format = `<pre>${format}</pre>`;
         format = format.replace(/<p><\/p>/g, '')
+
         return format;
     }
 
     function transposeChord(chord, amount) {
         const scale = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
         const normalizeMap = { "Cb": "B", "Db": "C#", "Eb": "D#", "Fb": "E", "Gb": "F#", "Ab": "G#", "Bb": "A#", "E#": "F", "B#": "C" }
-        return chord.replace(/[CDEFGAB](b|#)?/g, function (match) {
+        return chord.replace(/[CDEFGAB](b|#)?/g, (match) => {
             const i = (scale.indexOf((normalizeMap[match] ? normalizeMap[match] : match)) + amount) % scale.length;
             return scale[i < 0 ? i + scale.length : i];
         })
@@ -44,9 +61,13 @@ export function Preview({ title, artist, sections }) {
                 <fieldset className="mb-4 py-2 p-2 border rounded-md border-gray-200">
                     <legend className="font-semibold text-center text-sm">Transpose</legend>
                     <div className="flex items-center justify-center gap-2">
-                        <button className="bg-gray-800" onClick={handleDecrementSemitone}>-</button>
+                        <button className="bg-gray-800" onClick={handleDecrementSemitone}>
+                            <FiMinus />
+                        </button>
                         {semitone}
-                        <button className="bg-gray-800" onClick={handleIncrementSemitone}>+</button>
+                        <button className="bg-gray-800" onClick={handleIncrementSemitone}>
+                            <FiPlus />
+                        </button>
                     </div>
                 </fieldset>
             </div>

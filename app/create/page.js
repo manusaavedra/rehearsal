@@ -5,6 +5,8 @@ import { useInput } from "@/hooks/useInput"
 import { useRef, useState } from "react"
 import { ReactSortable } from "react-sortablejs"
 import { v4 as uuidv4 } from 'uuid'
+import swal from 'sweetalert2'
+import { Switch } from "@nextui-org/react";
 
 const SECTIONS_TITLES = [
     "INTRO",
@@ -31,9 +33,11 @@ const SECTIONS_TITLES = [
 
 export default function Create() {
     const [sections, setSections] = useState([])
+    const [disabled, setDisabled] = useState(false)
     const id = useRef()
     const title = useInput("")
     const artist = useInput("")
+
 
     const handleAddSection = () => {
         setSections((state) => [
@@ -65,8 +69,8 @@ export default function Create() {
     const handleSave = async () => {
         const song = {
             id: id.current,
-            title: title.value,
-            artist: artist.value,
+            title: String(title.value).trim(),
+            artist: String(artist.value).trim(),
             sections: JSON.stringify(sections)
         }
 
@@ -77,6 +81,13 @@ export default function Create() {
 
         const data = await req.json()
         id.current = data.id
+
+        swal.fire({
+            title: `${song.title} se ha guardado correctamente`,
+            showConfirmButton: false,
+            showCancelButton: false,
+            icon: 'success',
+        })
     }
 
     return (
@@ -91,36 +102,48 @@ export default function Create() {
                         <input className="w-full" type="text" onChange={artist.onChange} value={artist.value} placeholder="Artista" />
                     </div>
                 </div>
+                <div className="pb-4">
+                    <Switch
+                        onChange={(e) => setDisabled(e.target.checked)}
+                        size="md"
+                    >
+                        <span>Reordenar secciones</span>
+                    </Switch>
+                </div>
+                <ReactSortable list={sections} setList={setSections} disabled={!disabled}>
+                    {
+                        sections.map((section, index) => (
+                            <section className="border p-2 rounded-md shadow-md mb-4" key={section.id}>
 
-                {
-                    sections.map((section, index) => (
-                        <section className="border p-2 rounded-md shadow-md mb-4" key={section.id}>
+                                <div className="mb-2">
+                                    <select
+                                        disabled={disabled}
+                                        name="title"
+                                        onChange={(event) => handleChangeSection(index, event)}
+                                        value={section.title}
+                                    >
+                                        <option value="">SECCIÓN</option>
+                                        {
+                                            SECTIONS_TITLES.map((title) => (
+                                                <option key={title} value={title}>{title}</option>
+                                            ))
+                                        }
+                                    </select>
+                                </div>
 
-                            <div className="mb-2">
-                                <select
-                                    name="title"
+                                <textarea
+                                    disabled={disabled}
+                                    className="w-full contain-content resize-none"
+                                    name="content"
                                     onChange={(event) => handleChangeSection(index, event)}
-                                    value={section.title}
-                                >
-                                    <option value="">SECCIÓN</option>
-                                    {
-                                        SECTIONS_TITLES.map((title) => (
-                                            <option key={title} value={title}>{title}</option>
-                                        ))
-                                    }
-                                </select>
-                            </div>
+                                    value={section.content}
+                                    rows="6" cols="50"
+                                ></textarea>
+                            </section>
+                        ))
+                    }
+                </ReactSortable>
 
-                            <textarea
-                                className="w-full contain-content resize-none"
-                                name="content"
-                                onChange={(event) => handleChangeSection(index, event)}
-                                value={section.content}
-                                rows="6" cols="50"
-                            ></textarea>
-                        </section>
-                    ))
-                }
                 <div className="sticky bottom-4 flex items-center gap-4">
                     <button className="bg-gray-800 w-full py-2" onClick={handleAddSection}>Agregar sección</button>
                     <button className="w-full py-2" onClick={handleSave}>Guardar</button>
