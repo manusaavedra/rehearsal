@@ -28,6 +28,9 @@ const SECTIONS_TITLES = [
     "PUENTE 2",
     "PUENTE 3",
     "PUENTE 4",
+    "INSTRUMENTAL",
+    "SOLO",
+    "ACAPELLA",
     "FINAL"
 ]
 
