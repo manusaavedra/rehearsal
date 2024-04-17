@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { FiMinus, FiPlus } from "react-icons/fi";
+import { SectionIndicator } from "./SectionIndicator";
 
 export function Preview({ title, artist, sections }) {
     const [semitone, setSemitone] = useState(0)
@@ -61,11 +62,11 @@ export function Preview({ title, artist, sections }) {
                 <fieldset className="mb-4 py-2 p-2 border rounded-md border-gray-200">
                     <legend className="font-semibold text-center text-sm">Transpose</legend>
                     <div className="flex items-center justify-center gap-2">
-                        <button className="bg-gray-800" onClick={handleDecrementSemitone}>
+                        <button className="bg-black" onClick={handleDecrementSemitone}>
                             <FiMinus />
                         </button>
                         {semitone}
-                        <button className="bg-gray-800" onClick={handleIncrementSemitone}>
+                        <button className="bg-black" onClick={handleIncrementSemitone}>
                             <FiPlus />
                         </button>
                     </div>
@@ -75,8 +76,11 @@ export function Preview({ title, artist, sections }) {
                 sections.map((section) => {
                     const chart = chordFormat(section.content, semitone)
                     return (
-                        <fieldset className="mb-4 py-4 p-2 border rounded-md border-gray-200" key={section.id}>
-                            <legend className="font-semibold">{section.title}</legend>
+                        <fieldset className="mb-4 py-4 pt-6 px-4 border-2 rounded-md border-gray-200" key={section.id}>
+                            <legend className="font-semibold flex items-center gap-2">
+                                <SectionIndicator sectionTitle={section.title} />
+                                {section.title}
+                            </legend>
                             <p dangerouslySetInnerHTML={{ __html: chart }} />
                         </fieldset>
                     )
