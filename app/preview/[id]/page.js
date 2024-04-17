@@ -1,28 +1,33 @@
-"use client"
-
+import { Loading } from "@/components/Loading"
 import { Preview } from "@/components/Preview"
-import { useEffect, useState } from "react"
+import { revalidatePath } from "next/cache"
+import { Suspense } from "react"
 
-export default function Create({ params }) {
-    const [song, setSong] = useState(null)
+export default async function Create({ params }) {
+    revalidatePath(`/create/${params.id}`)
 
-    useEffect(() => {
-        fetch("/api/songs")
-            .then((res) => res.json())
-            .then((data) => {
-                const songById = data.find((song) => song.id === params.id)
-                const { sections, ...restSong } = songById
-                const parseSections = JSON.parse(sections) || []
-                console.log({ ...restSong, sections: parseSections })
-                setSong({ ...restSong, sections: parseSections })
-            })
-    }, [params.id])
+    const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs`, {
+        cache: "no-cache"
+    })
 
-    return <div className="max-w-4xl mx-auto">
-        {
-            song && (
+    const data = await request.json()
+
+    const songById = data.find((song) => song.id === params.id)
+
+    if (!songById) {
+        redirect('/')
+    }
+
+    const { sections, ...restSong } = songById
+    const parseSections = JSON.parse(sections) || []
+
+    const song = { ...restSong, sections: parseSections }
+
+    return (
+        <Suspense fallback={<Loading />}>
+            <div className="max-w-4xl mx-auto">
                 <Preview {...song} />
-            )
-        }
-    </div>
+            </div>
+        </Suspense>
+    )
 }

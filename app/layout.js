@@ -7,6 +7,8 @@ import NextUIProviders from '@/components/NextUIProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
+export const revalidate = 3600
+
 export const metadata = {
   title: 'Rehearsal',
   description: 'Crear tus chart nunca fue más práctico',

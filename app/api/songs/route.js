@@ -1,24 +1,26 @@
 import { client } from "@/database"
+import { v4 as uuidv4 } from 'uuid'
 
 export async function POST(req) {
     const { id, title, artist, sections } = await req.json()
 
     try {
         if (!id) {
-            const { rowsAffected, lastInsertRowid } = await client.execute({
+            const { rowsAffected } = await client.execute({
                 sql: "INSERT INTO songs (title, artist, sections) VALUES(?, ?, ?)",
                 args: [title, artist, sections]
             })
 
             if (rowsAffected > 0) {
                 const { rows } = await client.execute({
-                    sql: "SELECT * FROM songs WHERE id = ? LIMIT 1",
-                    args: [parseInt(lastInsertRowid)]
+                    sql: "SELECT * FROM songs WHERE title = ? LIMIT 1",
+                    args: [title]
                 })
+
                 return Response.json(rows[0])
             }
         } else {
-            const { rowsAffected, lastInsertRowid } = await client.execute({
+            const { rowsAffected } = await client.execute({
                 sql: "UPDATE songs SET title=?, artist=?, sections=? WHERE id=?",
                 args: [title, artist, sections, id]
             })
@@ -26,8 +28,9 @@ export async function POST(req) {
             if (rowsAffected > 0) {
                 const { rows } = await client.execute({
                     sql: "SELECT * FROM songs WHERE id = ? LIMIT 1",
-                    args: [parseInt(lastInsertRowid)]
+                    args: [id]
                 })
+
                 return Response.json(rows[0])
             }
         }
