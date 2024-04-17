@@ -4,13 +4,12 @@ import { revalidatePath } from "next/cache"
 import { Suspense } from "react"
 
 export async function generateMetadata({ params }) {
-    const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs`, {
+    const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`, {
         cache: "no-cache"
     })
 
     if (request.ok) {
-        const data = await request.json()
-        const songById = data.find((song) => song.id === params.id)
+        const songById = await request.json()
         return {
             title: `${songById.title} | ${songById.artist}`,
             description: 'Rehearsal tus charts mas fácil.'
@@ -23,12 +22,11 @@ export async function generateMetadata({ params }) {
 export default async function Create({ params }) {
     revalidatePath(`/create/${params.id}`)
 
-    const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs`, {
+    const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`, {
         cache: "no-cache"
     })
 
-    const data = await request.json()
-    const songById = data.find((song) => song.id === params.id)
+    const songById = await request.json()
 
     if (!songById) {
         redirect('/')
