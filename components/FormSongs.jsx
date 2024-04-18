@@ -74,7 +74,8 @@ export default function FormSongs({ song, mode = "create" }) {
                 icon: 'success',
             })
             
-            revalidatePath("/")
+            revalidatePath(`/create/${newsong.id}`)
+            revalidatePath(`/preview/${newsong.id}`)
         }
 
     }
