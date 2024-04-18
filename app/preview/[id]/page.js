@@ -6,9 +6,7 @@ import { Suspense } from "react"
 import { BsPencilSquare } from "react-icons/bs"
 
 export async function generateMetadata({ params }) {
-    const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`, {
-        cache: "no-cache"
-    })
+    const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`)
 
     if (request.ok) {
         const songById = await request.json()
@@ -22,11 +20,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Create({ params }) {
-    revalidatePath(`/create/${params.id}`)
-
-    const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`, {
-        cache: "no-cache"
-    })
+    const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`)
 
     const songById = await request.json()
 
