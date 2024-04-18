@@ -5,7 +5,6 @@ import { redirect } from "next/navigation"
 import { Suspense } from "react"
 
 export default async function Create({ params }) {
-    revalidatePath(`/create/${params.id}`)
 
     const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`)
 
