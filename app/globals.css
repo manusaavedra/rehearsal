@@ -6,10 +6,6 @@ p {
     @apply relative mb-4
 }
 
-pre {
-    @apply font-sans
-}
-
 .chord {
     @apply absolute top-[-14px] font-bold text-sm font-sans
 }
