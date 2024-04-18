@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { Switch } from "@nextui-org/react";
 import { SECTIONS_TITLES } from "@/constants"
 import FetchButton from "./FetchButton"
+import {revalidatePath} from 'next/cache'
 
 export default function FormSongs({ song, mode = "create" }) {
     const [sections, setSections] = useState(song?.sections || [])
@@ -72,6 +73,8 @@ export default function FormSongs({ song, mode = "create" }) {
                 showCancelButton: false,
                 icon: 'success',
             })
+            
+            revalidatePath("/")
         }
 
     }
