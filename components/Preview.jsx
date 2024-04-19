@@ -91,7 +91,7 @@ export function Preview({ title, artist, sections }) {
                 <h1 className="font-bold text-2xl">{title}</h1>
                 <h4 className="text-sm">{artist}</h4>
                 <fieldset className="mb-4 py-2 p-2 border rounded-md border-gray-200">
-                    <legend className="block font-semibold text-center text-sm">Transpose</legend>
+                    <legend className="font-semibold text-center text-sm">Transpose</legend>
                     <div className="flex items-center justify-center gap-2">
                         <button className="bg-black" onClick={handleDecrementSemitone}>
                             <FiMinus />
