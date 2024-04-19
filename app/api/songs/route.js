@@ -1,5 +1,4 @@
 import { client } from "@/database"
-import { v4 as uuidv4 } from 'uuid'
 
 export async function POST(req) {
     const { id, title, artist, sections } = await req.json()

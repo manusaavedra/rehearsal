@@ -1,5 +1,7 @@
 import { client } from "@/database"
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(req, { params }) {
     try {
         const { rows } = await client.execute({
