@@ -16,7 +16,10 @@ export default function RootLayout({ children }) {
     <html lang="es">
       <body className={inter.className}>
         <header className="bg-neutral-800 flex items-center justify-between text-white px-4 py-2">
-          <Link href="/" prefetch className="text-3xl font-bold">Rehearsal</Link>
+          <div className="flex flex-col">
+          <Link href="/" prefetch className="text-2xl font-bold">Rehearsal</Link>
+          <span className="text-xs">by Casa de oración</span>
+          </div>
           <nav>
             <ul>
               <li>
