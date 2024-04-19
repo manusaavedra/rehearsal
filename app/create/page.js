@@ -1,8 +1,11 @@
 import FormSongs from "@/components/FormSongs"
+import { Suspense } from "react"
 
 export default function Create() {
     return (
-        <FormSongs />
+        <Suspense>
+            <FormSongs />
+        </Suspense>
     )
 }
 

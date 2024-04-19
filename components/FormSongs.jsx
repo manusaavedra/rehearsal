@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid'
 import { Switch } from "@nextui-org/react";
 import { SECTIONS_TITLES } from "@/constants"
 import FetchButton from "./FetchButton"
-import {revalidatePath} from 'next/cache'
+import revalidateData from "@/actions"
 
 export default function FormSongs({ song, mode = "create" }) {
     const [sections, setSections] = useState(song?.sections || [])
@@ -60,7 +60,7 @@ export default function FormSongs({ song, mode = "create" }) {
 
         const request = await fetch('/api/songs', {
             method: "post",
-            body: JSON.stringify(song)
+            body: JSON.stringify(song),
         })
 
         if (request.ok) {
@@ -73,9 +73,8 @@ export default function FormSongs({ song, mode = "create" }) {
                 showCancelButton: false,
                 icon: 'success',
             })
-            
-            revalidatePath(`/create/${newsong.id}`)
-            revalidatePath(`/preview/${newsong.id}`)
+
+            revalidateData()
         }
 
     }

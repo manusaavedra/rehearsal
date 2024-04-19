@@ -1,11 +1,30 @@
 "use client"
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FiMinus, FiPlus } from "react-icons/fi";
 import { SectionIndicator } from "./SectionIndicator";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
 export function Preview({ title, artist, sections }) {
     const [semitone, setSemitone] = useState(0)
+    const router = useRouter()
+    const pathname = usePathname()
+    const searchParams = useSearchParams()
+
+    useEffect(() => {
+        const semitone = searchParams.get("semitone")
+        if (semitone) setSemitone(parseInt(semitone))
+    }, [searchParams])
+
+    const createQueryString = useCallback(
+        (name, value) => {
+            const params = new URLSearchParams(searchParams.toString())
+            params.set(name, value)
+
+            return params.toString()
+        },
+        [searchParams]
+    )
 
     const replaceNumbersWithSuperscripts = (text) => {
         return text.replace(/[6789]/g, (match) => {
@@ -47,11 +66,23 @@ export function Preview({ title, artist, sections }) {
     }
 
     const handleIncrementSemitone = () => {
-        setSemitone((prevState) => prevState + 1)
+        setSemitone((prevState) => {
+            const newState = prevState + 1
+
+            router.push(pathname + '?' + createQueryString('semitone', newState))
+
+            return newState
+        })
     }
 
     const handleDecrementSemitone = () => {
-        setSemitone((prevState) => prevState - 1)
+        setSemitone((prevState) => {
+            const newState = prevState - 1
+
+            router.push(pathname + '?' + createQueryString('semitone', newState))
+
+            return newState
+        })
     }
 
     return (

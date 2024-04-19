@@ -1,21 +1,15 @@
 import { Loading } from "@/components/Loading"
-import { revalidatePath } from "next/cache"
 import Link from "next/link"
 import { Suspense } from "react"
 import { BsPencilSquare } from "react-icons/bs"
 
 export default async function Home() {
-  revalidatePath(`/`)
-
-  const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs`, {
-    cache: "no-cache"
-  })
-
+  const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs`)
   const songs = await request.json()
 
   return (
-    <div className="max-w-5xl mx-auto p-4">
-      <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loading />}>
+      <div className="max-w-5xl mx-auto p-4">
         <div className="mt-4">
           {
             songs.map(({ id, title, artist }) => (
@@ -27,7 +21,7 @@ export default async function Home() {
                   </div>
                 </Link>
                 <div className="absolute right-0 top-0 h-full flex items-center gap-2">
-                  <Link href={`/create/${id}`}>
+                  <Link prefetch href={`/create/${id}`}>
                     <BsPencilSquare size={24} />
                   </Link>
                 </div>
@@ -35,7 +29,7 @@ export default async function Home() {
             ))
           }
         </div>
-      </Suspense>
-    </div>
+      </div>
+    </Suspense>
   )
 }

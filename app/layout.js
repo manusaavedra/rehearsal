@@ -4,10 +4,7 @@ import Link from 'next/link'
 import { BsPlus } from "react-icons/bs"
 import NextUIProviders from '@/components/NextUIProvider'
 
-
 const inter = Inter({ subsets: ['latin'] })
-
-export const revalidate = 3600
 
 export const metadata = {
   title: 'Rehearsal',
@@ -20,11 +17,11 @@ export default function RootLayout({ children }) {
       <NextUIProviders>
         <body className={inter.className}>
           <header className="bg-neutral-800 flex items-center justify-between text-white px-4 py-2">
-            <h2 className="text-3xl font-bold">Rehearsal</h2>
+            <Link href="/" prefetch className="text-3xl font-bold">Rehearsal</Link>
             <nav>
               <ul>
                 <li>
-                  <Link className="bg-white flex items-center gap-2 text-black font-semibold p-2 rounded-md " href={`/create`}>
+                  <Link prefetch className="bg-white flex items-center gap-2 text-black font-semibold p-2 rounded-md " href={`/create`}>
                     <BsPlus size={24} />
                     Añadir
                   </Link>

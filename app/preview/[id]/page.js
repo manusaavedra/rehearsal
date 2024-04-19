@@ -1,12 +1,13 @@
 import { Loading } from "@/components/Loading"
 import { Preview } from "@/components/Preview"
-import { revalidatePath } from "next/cache"
 import Link from "next/link"
 import { Suspense } from "react"
 import { BsPencilSquare } from "react-icons/bs"
 
 export async function generateMetadata({ params }) {
-    const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`)
+    const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`, {
+        cache: "no-store"
+    })
 
     if (request.ok) {
         const songById = await request.json()
@@ -20,7 +21,9 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Create({ params }) {
-    const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`)
+    const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`, {
+        cache: "no-store"
+    })
 
     const songById = await request.json()
 
@@ -36,7 +39,7 @@ export default async function Create({ params }) {
     return (
         <Suspense fallback={<Loading />}>
             <div className="max-w-4xl mx-auto">
-                <Link className="flex items-center px-4 gap-2 mt-4" href={`/create/${song.id}`}>
+                <Link prefetch className="flex items-center px-4 gap-2 mt-4" href={`/create/${song.id}`}>
                     <BsPencilSquare size={24} />
                     Editar esta canción
                 </Link>
