@@ -13,7 +13,7 @@ export function Preview({ title, artist, sections }) {
 
     useEffect(() => {
         const semitone = searchParams.get("semitone")
-        if (semitone) setSemitone(parseInt(semitone))
+        setSemitone(parseInt(semitone ?? 0))
     }, [searchParams])
 
     const createQueryString = useCallback(
