@@ -1,4 +1,4 @@
-import { Loading } from "@/components/Loading"
+import { ActiveIndicador } from "@/components/ActiveIndicator"
 import Link from "next/link"
 import { Suspense } from "react"
 import { BsPencilSquare } from "react-icons/bs"
@@ -8,7 +8,7 @@ export default async function Home() {
   const songs = await request.json()
 
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<ActiveIndicador />}>
       <div className="max-w-5xl mx-auto p-4">
         <div className="mt-4">
           {

@@ -50,7 +50,7 @@ export function Preview({ title, artist, sections }) {
             .replace(regex, '<span class="chord">$1</span>')
             .replace(/\n/g, '</p><p>')
 
-        format = `<pre>${format}</pre>`;
+        format = `<pre><p>${format}</p></pre>`;
         format = format.replace(/<p><\/p>/g, '')
 
         return format;
@@ -112,7 +112,7 @@ export function Preview({ title, artist, sections }) {
                                 <SectionIndicator sectionTitle={section.title} />
                                 {section.title}
                             </legend>
-                            <p dangerouslySetInnerHTML={{ __html: chart }} />
+                            <div dangerouslySetInnerHTML={{ __html: chart }} />
                         </fieldset>
                     )
                 })

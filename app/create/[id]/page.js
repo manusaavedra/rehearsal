@@ -1,13 +1,10 @@
 import FormSongs from "@/components/FormSongs"
-import { Loading } from "@/components/Loading"
+import { ActiveIndicador } from "@/components/ActiveIndicator"
 import { redirect } from "next/navigation"
 import { Suspense } from "react"
 
 export default async function Create({ params }) {
-    const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`, {
-        cache: "no-store"
-    })
-
+    const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`)
     const songById = await request.json()
 
     if (!songById) {
@@ -20,11 +17,9 @@ export default async function Create({ params }) {
     const song = { ...restSong, sections: parseSections }
 
     return (
-        <Suspense fallback={<Loading />}>
-            <section>
-                <FormSongs song={song} mode="edit" />
-            </section>
-        </Suspense>
+        <section>
+            <FormSongs song={song} mode="edit" />
+        </section>
     )
 }
 
