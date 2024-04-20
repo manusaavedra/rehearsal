@@ -113,7 +113,7 @@ export function Preview({ title, artist, sections }) {
                             className="max-w-md"
                         />
                     </div>
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-center gap-4">
                         <div>
                             <Switch
                                 isSelected={showChords}

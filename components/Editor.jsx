@@ -28,7 +28,7 @@ export default function Editor(props) {
 
             setTimeout(() => {
                 searchInputRef.current.focus()
-            }, 1)
+            }, 10)
         }
     }
 
@@ -42,6 +42,7 @@ export default function Editor(props) {
             const cursorPosition = event.target.selectionStart
             editor.current.focus()
             editor.current.setSelectionRange(cursorPosition, cursorPosition)
+            searchInput.setValue("")
         }, 1)
     }
 
@@ -92,7 +93,7 @@ export default function Editor(props) {
                             </div>
                             <div className="flex flex-col">
                                 {
-                                    CHORDS.flat(1).filter(filterByChord).map((chord) => (
+                                    CHORDS.flat().filter(filterByChord).slice(0, 10).map((chord) => (
                                         <div className="w-full border-b py-2" onClick={() => handleChordSelected(chord)} key={chord}>
                                             <p className="!m-0">{chord}</p>
                                         </div>
