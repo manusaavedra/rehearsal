@@ -1,7 +1,5 @@
 import FormSongs from "@/components/FormSongs"
-import { ActiveIndicador } from "@/components/ActiveIndicator"
 import { redirect } from "next/navigation"
-import { Suspense } from "react"
 
 export default async function Create({ params }) {
     const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`)
