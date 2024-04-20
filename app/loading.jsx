@@ -2,7 +2,7 @@ import { Skeleton } from "@nextui-org/react"
 
 export default function Loading() {
     return (
-        <div className="pt-10 p-4">
+        <div className="max-w-5xl mx-auto pt-10 p-4">
             {
                 Array.from({ length: 20 }).map((_, section) => {
                     return (

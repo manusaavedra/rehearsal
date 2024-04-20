@@ -11,6 +11,7 @@ export default function Editor(props) {
     const editor = useRef()
     const lastCursorPosition = useRef()
     const lastSelectionText = useRef("")
+    const searchInputRef = useRef()
 
     const { onChange, ref, ...restProps } = props
 
@@ -24,6 +25,10 @@ export default function Editor(props) {
                 String(value).substring(0, cursorPosition),
                 String(value).substring(cursorPosition)
             ]
+
+            setTimeout(() => {
+                searchInputRef.current.focus()
+            }, 1)
         }
     }
 
@@ -77,6 +82,7 @@ export default function Editor(props) {
                         <div className="bg-white rounded-xl mt-8 p-4 pt-0 max-w-sm max-h-[300px] overflow-y-auto w-[95%] mx-auto">
                             <div className="z-10 mb-2 py-4 sticky top-0 left-0 bg-white">
                                 <input
+                                    ref={searchInputRef}
                                     className="w-full"
                                     type="text"
                                     onChange={searchInput.onChange}

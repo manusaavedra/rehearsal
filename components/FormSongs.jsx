@@ -34,9 +34,6 @@ export default function FormSongs({ song, mode = "create" }) {
     }
 
     const handleChangeSection = (event, index) => {
-
-        console.log(event.target.value, index)
-
         const newSections = sections.map((section, i) => {
             if (index === i) {
                 const { name, value } = event.target

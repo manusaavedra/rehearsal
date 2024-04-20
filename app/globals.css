@@ -6,6 +6,14 @@ p {
     @apply relative mb-4
 }
 
+pre {
+    @apply whitespace-pre-wrap font-sans
+}
+
+.chord-metadata {
+    @apply w-full block text-xs text-gray-500 italic font-mono whitespace-pre-wrap
+}
+
 .chord {
     @apply absolute top-[-14px] font-bold text-sm font-sans
 }
