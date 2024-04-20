@@ -32,10 +32,6 @@ export default async function Create({ params }) {
 
     const { key, ...song } = { ...restSong, sections: parseSections }
 
-    await new Promise((resolve) => {
-        setTimeout(() => { resolve() }, 10000)
-    })
-
     return (
         <section className="max-w-4xl mx-auto">
             <Link prefetch className="flex items-center px-4 gap-2 mt-4" href={`/create/${song.id}`}>
