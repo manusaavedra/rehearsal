@@ -27,12 +27,9 @@ export function Preview({ title, artist, sections }) {
     )
 
     const replaceNumbersWithSuperscripts = (text) => {
-        return text.replace(/[6789]/g, (match) => {
+        return text.replace(/[7]/g, (match) => {
             const superscripts = {
-                '6': '⁶',
-                '7': '⁷',
-                '8': '⁸',
-                '9': '⁹'
+                '7': '⁷'
             }
             return superscripts[match];
         })

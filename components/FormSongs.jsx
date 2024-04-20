@@ -10,6 +10,7 @@ import { Switch } from "@nextui-org/react";
 import { SECTIONS_TITLES } from "@/constants"
 import FetchButton from "./FetchButton"
 import revalidateData from "@/actions"
+import Editor from "./Editor"
 
 export default function FormSongs({ song, mode = "create" }) {
     const [sections, setSections] = useState(song?.sections || [])
@@ -32,7 +33,10 @@ export default function FormSongs({ song, mode = "create" }) {
         ])
     }
 
-    const handleChangeSection = (index, event) => {
+    const handleChangeSection = (event, index) => {
+
+        console.log(event.target.value, index)
+
         const newSections = sections.map((section, i) => {
             if (index === i) {
                 const { name, value } = event.target
@@ -108,7 +112,7 @@ export default function FormSongs({ song, mode = "create" }) {
                                     <select
                                         disabled={disabled}
                                         name="title"
-                                        onChange={(event) => handleChangeSection(index, event)}
+                                        onChange={(event) => handleChangeSection(event, index)}
                                         value={section.title}
                                     >
                                         <option value="">SECCIÓN</option>
@@ -119,15 +123,15 @@ export default function FormSongs({ song, mode = "create" }) {
                                         }
                                     </select>
                                 </div>
-
-                                <textarea
+                                <Editor
+                                    dataindex={index}
                                     disabled={disabled}
                                     className="w-full contain-content resize-none"
                                     name="content"
-                                    onChange={(event) => handleChangeSection(index, event)}
+                                    onChange={handleChangeSection}
                                     value={section.content}
                                     rows="6" cols="50"
-                                ></textarea>
+                                />
                             </section>
                         ))
                     }
