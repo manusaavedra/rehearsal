@@ -11,7 +11,7 @@ import { SECTIONS_TITLES } from "@/constants"
 import FetchButton from "./FetchButton"
 import revalidateData from "@/actions"
 import Editor from "./Editor"
-import { BsCopy, BsTrash } from "react-icons/bs"
+import { BsCopy, BsMusicNote, BsTrash } from "react-icons/bs"
 import { Button, ButtonGroup } from "@nextui-org/react"
 
 export default function FormSongs({ song, mode = "create" }) {
@@ -141,11 +141,14 @@ export default function FormSongs({ song, mode = "create" }) {
                                         }
                                     </select>
                                     <ButtonGroup>
-                                        <Button isDisabled={disabled} onClick={() => handleDeleteSection(section)} isIconOnly >
-                                            <BsTrash />
+                                        <Button isDisabled={disabled} onClick={() => { }} isIconOnly >
+                                            <BsMusicNote />
                                         </Button>
                                         <Button isDisabled={disabled} onClick={() => handleDuplicateSection(section)} isIconOnly >
                                             <BsCopy />
+                                        </Button>
+                                        <Button isDisabled={disabled} onClick={() => handleDeleteSection(section)} isIconOnly >
+                                            <BsTrash />
                                         </Button>
                                     </ButtonGroup>
                                 </div>
