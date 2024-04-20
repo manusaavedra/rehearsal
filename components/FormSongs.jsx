@@ -144,7 +144,7 @@ export default function FormSongs({ song, mode = "create" }) {
                                         <Button isDisabled={disabled} onClick={() => handleDeleteSection(section)} isIconOnly >
                                             <BsTrash />
                                         </Button>
-                                        <Button isDisabled={disabled} color="foreground" onClick={() => handleDuplicateSection(section)} isIconOnly >
+                                        <Button isDisabled={disabled} onClick={() => handleDuplicateSection(section)} isIconOnly >
                                             <BsCopy />
                                         </Button>
                                     </ButtonGroup>
@@ -163,8 +163,8 @@ export default function FormSongs({ song, mode = "create" }) {
                     }
                 </ReactSortable>
                 <div className="sticky bottom-4 flex items-center gap-4">
-                    <button className="bg-gray-800 w-full py-2" onClick={handleAddSection}>Agregar sección</button>
-                    <FetchButton className="w-full py-2" onClick={handleSave}>Guardar</FetchButton>
+                    <button className="bg-gray-800 text-white w-full py-2" onClick={handleAddSection}>Agregar sección</button>
+                    <FetchButton className="bg-blue-500 text-white w-full py-2" onClick={handleSave}>Guardar</FetchButton>
                 </div>
             </div>
             <section className="h-full hidden sm:block w-full p-4">

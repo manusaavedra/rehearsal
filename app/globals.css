@@ -35,5 +35,5 @@ input:focus, select:focus, textarea:focus {
 }
 
 button {
-    @apply bg-blue-500 text-white font-semibold rounded-md py-1 px-2
+    @apply font-semibold rounded-md py-1 px-2
 }

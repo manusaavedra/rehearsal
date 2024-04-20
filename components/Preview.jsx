@@ -5,6 +5,7 @@ import { FiMinus, FiPlus } from "react-icons/fi";
 import { SectionIndicator } from "./SectionIndicator";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { Switch, Slider } from "@nextui-org/react";
+import ModalButton from "./ModalButton";
 
 export function Preview({ title, artist, sections }) {
     const [semitone, setSemitone] = useState(0)
@@ -94,46 +95,50 @@ export function Preview({ title, artist, sections }) {
     }
 
     return (
-        <div className="pt-10 p-4">
-            <div className="mb-6">
+        <div className="pt-8 p-4">
+            <div className="sticky z-40 top-0 left-0 w-full py-2 bg-white">
                 <h1 className="font-bold text-2xl">{title}</h1>
                 <h4 className="text-sm">{artist}</h4>
-                <fieldset className="mb-4 flex flex-col gap-3 py-2 p-2 border rounded-md border-gray-200">
-                    <legend className="font-semibold text-center text-sm">Configurar vista</legend>
-                    <div className="flex items-center justify-center gap-2">
-                        <Slider
-                            size="sm"
-                            step={1}
-                            onChange={handleChangeSemitone}
-                            label="Transpose"
-                            showSteps={true}
-                            maxValue={12}
-                            minValue={-12}
-                            defaultValue={0}
-                            className="max-w-md"
-                        />
-                    </div>
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-center gap-4">
-                        <div>
-                            <Switch
-                                isSelected={showChords}
-                                onChange={(e) => setShowChords(e.target.checked)}
+            </div>
+            <div className="mb-6">
+                <ModalButton>
+                    <fieldset className="mb-4 flex flex-col gap-3 py-2 p-2 border rounded-md border-gray-200">
+                        <legend className="font-semibold text-center text-sm">Configurar vista</legend>
+                        <div className="flex items-center justify-center gap-2">
+                            <Slider
                                 size="md"
-                            >
-                                <span>Acordes</span>
-                            </Switch>
+                                step={1}
+                                onChange={handleChangeSemitone}
+                                label="Transpose"
+                                showSteps={true}
+                                maxValue={12}
+                                minValue={-12}
+                                defaultValue={0}
+                                className="max-w-md"
+                            />
                         </div>
-                        <div>
-                            <Switch
-                                isSelected={showMetadata}
-                                onChange={(e) => setShowMetadata(e.target.checked)}
-                                size="md"
-                            >
-                                <span>Comentarios</span>
-                            </Switch>
+                        <div className="flex flex-col sm:flex-row sm:items-center justify-center gap-4">
+                            <div>
+                                <Switch
+                                    isSelected={showChords}
+                                    onChange={(e) => setShowChords(e.target.checked)}
+                                    size="md"
+                                >
+                                    <span>Acordes</span>
+                                </Switch>
+                            </div>
+                            <div>
+                                <Switch
+                                    isSelected={showMetadata}
+                                    onChange={(e) => setShowMetadata(e.target.checked)}
+                                    size="md"
+                                >
+                                    <span>Comentarios</span>
+                                </Switch>
+                            </div>
                         </div>
-                    </div>
-                </fieldset>
+                    </fieldset>
+                </ModalButton>
             </div>
             {
                 sections.map((section) => {
