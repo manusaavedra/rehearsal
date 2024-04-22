@@ -1,13 +1,13 @@
 import { client } from "@/database"
 
 export async function POST(req) {
-    const { id, title, artist, sections } = await req.json()
+    const { id, title, artist, sections, links } = await req.json()
 
     try {
         if (!id) {
             const { rowsAffected } = await client.execute({
-                sql: "INSERT INTO songs (title, artist, sections) VALUES(?, ?, ?)",
-                args: [title, artist, sections]
+                sql: "INSERT INTO songs (title, artist, sections, links) VALUES(?, ?, ?, ?)",
+                args: [title, artist, sections, links]
             })
 
             if (rowsAffected > 0) {
@@ -20,8 +20,8 @@ export async function POST(req) {
             }
         } else {
             const { rowsAffected } = await client.execute({
-                sql: "UPDATE songs SET title=?, artist=?, sections=? WHERE id=?",
-                args: [title, artist, sections, id]
+                sql: "UPDATE songs SET title=?, artist=?, sections=?, links=? WHERE id=?",
+                args: [title, artist, sections, links, id]
             })
 
             if (rowsAffected > 0) {

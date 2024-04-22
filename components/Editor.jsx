@@ -78,7 +78,7 @@ export default function Editor(props) {
             ></textarea>
             {
                 showPopup && (
-                    <div className="z-10 fixed top-0 overflow-hidden left-0 w-full h-screen">
+                    <div className="z-40 fixed top-0 overflow-hidden left-0 w-full h-screen">
                         <div onClick={() => setShowPopup(false)} className="z-[-1] absolute top-0 overflow-hidden left-0 w-full h-full bg-black bg-opacity-15" />
                         <div className="bg-white rounded-xl mt-8 p-4 pt-0 max-w-sm max-h-[300px] overflow-y-auto w-[95%] mx-auto">
                             <div className="z-10 mb-2 py-4 sticky top-0 left-0 bg-white">

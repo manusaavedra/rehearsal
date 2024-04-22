@@ -9,10 +9,11 @@ export default async function Create({ params }) {
         redirect('/')
     }
 
-    const { sections, ...restSong } = songById
+    const { sections, links, ...restSong } = songById
     const parseSections = JSON.parse(sections) || []
+    const parseLinks = JSON.parse(links) || []
 
-    const song = { ...restSong, sections: parseSections }
+    const song = { ...restSong, sections: parseSections, links: parseLinks }
 
     return (
         <section>

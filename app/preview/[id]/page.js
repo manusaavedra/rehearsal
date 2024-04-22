@@ -1,6 +1,10 @@
+"use server"
+
 import { Preview } from "@/components/Preview"
+import { Skeleton } from "@nextui-org/react"
 import { revalidatePath } from "next/cache"
 import Link from "next/link"
+import { Suspense } from "react"
 import { BsPencilSquare } from "react-icons/bs"
 
 export async function generateMetadata({ params }) {
@@ -27,18 +31,42 @@ export default async function Create({ params }) {
         redirect('/')
     }
 
-    const { sections, ...restSong } = songById
+    const { sections, links, ...restSong } = songById
     const parseSections = JSON.parse(sections) || []
+    const parseLinks = JSON.parse(links) || []
 
-    const { key, ...song } = { ...restSong, sections: parseSections }
+    const { key, ...song } = { ...restSong, sections: parseSections, links: parseLinks }
 
     return (
         <section className="max-w-4xl mx-auto">
-            <Link prefetch className="flex items-center px-4 gap-2 mt-4" href={`/create/${song.id}`}>
-                <BsPencilSquare size={24} />
-                Editar esta canción
-            </Link>
-            <Preview {...song} />
+            <Suspense fallback={<Loading />}>
+                <Preview {...song} />
+            </Suspense>
         </section>
+    )
+}
+
+function Loading() {
+    return (
+        <div className="pt-10 p-4">
+            <div className="mb-6 flex flex-col gap-2">
+                <Skeleton className="h-4 w-40 rounded-xl" />
+                <Skeleton className="h-2 w-20 rounded-xl" />
+            </div>
+            <div className="mb-6">
+                <Skeleton className="h-8 w-full rounded-xl" />
+            </div>
+            {
+                Array.from({ length: 5 }).map((_, section) => {
+                    return (
+                        <div key={section} className="mb-4">
+                            <Skeleton className="rounded-xl">
+                                <div className="h-32 w-full"></div>
+                            </Skeleton>
+                        </div>
+                    )
+                })
+            }
+        </div>
     )
 }

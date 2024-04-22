@@ -1,13 +1,13 @@
 "use client"
 
 import { useCallback, useEffect, useState } from "react";
-import { FiMinus, FiPlus } from "react-icons/fi";
 import { SectionIndicator } from "./SectionIndicator";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { Switch, Slider } from "@nextui-org/react";
 import ModalButton from "./ModalButton";
+import YoutubePlayer from "./YoutubePlayer";
 
-export function Preview({ title, artist, sections }) {
+export function Preview({ title, artist, sections, links }) {
     const [semitone, setSemitone] = useState(0)
     const [showMetadata, setShowMetadata] = useState(true)
     const [showChords, setShowChords] = useState(true)
@@ -59,7 +59,6 @@ export function Preview({ title, artist, sections }) {
 
     const chordFormat = (text, semitones, options) => {
         const chordRegex = /\[(.*?)\]/g
-
         const transposeText = text.replace(/\[(.*?)\]/g, (_, chord) => {
             return "[" + transposeChord(chord, semitones) + "]"
         })
@@ -96,11 +95,18 @@ export function Preview({ title, artist, sections }) {
 
     return (
         <div className="pt-8 p-4">
-            <div className="sticky z-40 top-0 left-0 w-full py-2 bg-white">
+            <div className="sticky z-20 top-0 left-0 w-full py-2 bg-white">
                 <h1 className="font-bold text-2xl">{title}</h1>
                 <h4 className="text-sm">{artist}</h4>
             </div>
-            <div className="mb-6">
+            <div className="flex my-2 items-center">
+                {
+                    links && links.map(({ id, title, url }) => (
+                        <a className="px-4 py-1 rounded-full bg-gray-200 text-xs" key={id} href={url} rel="noreferrer" target="_blank">{title}</a>
+                    ))
+                }
+            </div>
+            <div className="my-4">
                 <ModalButton>
                     <fieldset className="mb-4 flex flex-col gap-3 py-2 p-2 border rounded-md border-gray-200">
                         <legend className="font-semibold text-center text-sm">Configurar vista</legend>
@@ -114,6 +120,7 @@ export function Preview({ title, artist, sections }) {
                                 maxValue={12}
                                 minValue={-12}
                                 defaultValue={0}
+                                value={semitone}
                                 className="max-w-md"
                             />
                         </div>

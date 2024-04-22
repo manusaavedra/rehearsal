@@ -11,11 +11,12 @@ import { SECTIONS_TITLES } from "@/constants"
 import FetchButton from "./FetchButton"
 import revalidateData from "@/actions"
 import Editor from "./Editor"
-import { BsCopy, BsMusicNote, BsTrash } from "react-icons/bs"
+import { BsCopy, BsLink45Deg, BsMusicNote, BsTrash } from "react-icons/bs"
 import { Button, ButtonGroup } from "@nextui-org/react"
 
 export default function FormSongs({ song, mode = "create" }) {
     const [sections, setSections] = useState(song?.sections || [])
+    const [links, setLinks] = useState(song?.links || [])
     const [disabled, setDisabled] = useState(false)
 
     const isEditable = mode === "edit"
@@ -35,6 +36,17 @@ export default function FormSongs({ song, mode = "create" }) {
         ])
     }
 
+    const handleAddLink = () => {
+        setLinks((state) => [
+            ...state,
+            {
+                id: uuidv4(),
+                title: "",
+                url: "",
+            }
+        ])
+    }
+
     const handleChangeSection = (event, index) => {
         const newSections = sections.map((section, i) => {
             if (index === i) {
@@ -49,6 +61,22 @@ export default function FormSongs({ song, mode = "create" }) {
         })
 
         setSections(newSections)
+    }
+
+    const handleChangeLink = (event, index) => {
+        const newLinks = links.map((link, i) => {
+            if (index === i) {
+                const { name, value } = event.target
+                return {
+                    ...link,
+                    [name]: value
+                }
+            }
+
+            return link
+        })
+
+        setLinks(newLinks)
     }
 
     const handleDuplicateSection = (section) => {
@@ -76,7 +104,8 @@ export default function FormSongs({ song, mode = "create" }) {
             id: id.current,
             title: String(title.value).trim(),
             artist: String(artist.value).trim(),
-            sections: JSON.stringify(sections)
+            sections: JSON.stringify(sections),
+            links: JSON.stringify(links)
         }
 
         const request = await fetch('/api/songs', {
@@ -111,6 +140,24 @@ export default function FormSongs({ song, mode = "create" }) {
                     <div className="mb-2">
                         <input className="w-full" type="text" onChange={artist.onChange} value={artist.value} placeholder="Artista" />
                     </div>
+                </div>
+                <div className="my-6">
+                    {
+                        links.map((link, index) => (
+                            <div className="flex flex-col gap-2 border p-2 rounded-md shadow-md mb-4" key={link.id}>
+                                <div>
+                                    <input className="w-full" name="title" type="text" onChange={(event) => { handleChangeLink(event, index) }} value={link.title} placeholder="Nombre de Link" />
+                                </div>
+                                <div>
+                                    <input className="w-full" name="url" type="text" onChange={(event) => { handleChangeLink(event, index) }} value={link.url} placeholder="URL" />
+                                </div>
+                            </div>
+                        ))
+                    }
+                    <button className="flex items-center gap-2 justify-center bg-gray-200 w-full py-2" onClick={handleAddLink}>
+                        <BsLink45Deg size={24} />
+                        Aduntar Link
+                    </button>
                 </div>
                 <div className="pb-4 text-right">
                     <Switch

@@ -11,7 +11,7 @@ pre {
 }
 
 .chord-metadata {
-    @apply w-full block text-xs text-gray-500 italic font-mono whitespace-pre-wrap bg-gray-100 rounded-xl px-2 py-1 mb-1
+    @apply w-full block text-xs text-gray-700 italic font-mono whitespace-pre-wrap bg-gray-100 rounded-xl px-2 py-1 mb-1
 }
 
 .chord {
