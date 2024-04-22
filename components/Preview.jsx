@@ -5,7 +5,6 @@ import { SectionIndicator } from "./SectionIndicator";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { Switch, Slider } from "@nextui-org/react";
 import ModalButton from "./ModalButton";
-import YoutubePlayer from "./YoutubePlayer";
 
 export function Preview({ title, artist, sections, links }) {
     const [semitone, setSemitone] = useState(0)
