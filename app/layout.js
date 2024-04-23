@@ -20,16 +20,6 @@ export default function RootLayout({ children }) {
             <Link href="/" prefetch className="text-2xl font-bold">Rehearsal</Link>
             <span className="text-xs">by Casa de oración</span>
           </div>
-          <nav>
-            <ul>
-              <li>
-                <Link prefetch className="bg-blue-500 flex items-center gap-1 text-white font-semibold p-2 rounded-md " href={`/create`}>
-                  <BsPlus size={24} />
-                  Añadir
-                </Link>
-              </li>
-            </ul>
-          </nav>
         </header>
         <NextUIProviders>
           {children}
