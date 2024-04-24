@@ -144,11 +144,15 @@ export default function FormSongs({ song, mode = "create" }) {
                 <div className="mb-6">
                     <div className="flex items-center gap-2 flex-nowrap mb-2">
                         <input className="w-full" type="text" onChange={title.onChange} value={title.value} placeholder="Titulo de la canción" />
-                        <ModalButton buttonChildren={<BsSearch size={16} />}>
-                            <div>
-                                <SearchLyrics onSelected={handleSelected} />
-                            </div>
-                        </ModalButton>
+                        {
+                            !isEditable && (
+                                <ModalButton buttonChildren={<BsSearch size={16} />}>
+                                    <div>
+                                        <SearchLyrics onSelected={handleSelected} />
+                                    </div>
+                                </ModalButton>
+                            )
+                        }
                     </div>
                     <div className="mb-2">
                         <input className="w-full" type="text" onChange={artist.onChange} value={artist.value} placeholder="Artista" />

@@ -107,7 +107,7 @@ export function Preview({ title, artist, sections, links }) {
                 }
             </div>
             <div className="my-4">
-                <ModalButton buttonChildren={<HiOutlineAdjustments size={16} />}>
+                <ModalButton buttonChildren={<HiOutlineAdjustments size={24} />}>
                     <fieldset className="mb-4 flex flex-col gap-3 py-2 p-2 border rounded-md border-gray-200">
                         <legend className="font-semibold text-center text-sm">Configurar vista</legend>
                         <div className="flex items-center justify-center gap-2">
