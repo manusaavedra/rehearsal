@@ -20,7 +20,7 @@ export default function SearchLyrics({ onSelected }) {
                 .then((res) => res.json())
                 .then((result) => setResults(result))
         }
-    }, 500)
+    }, 300)
 
     const handleChange = (e) => {
         searchInput.onChange(e)
