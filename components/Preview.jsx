@@ -98,7 +98,7 @@ export function Preview({ title, artist, image, sections, links }) {
 
     return (
         <div className="pt-8 p-4">
-            <div className={`sticky grid grid-cols-[60px_1fr_60px] items-center gap-4 z-20 top-0 left-0 w-full py-2 bg-white`}>
+            <div className={`sticky grid grid-cols-[60px_1fr_100px] items-center gap-4 z-20 top-0 left-0 w-full py-2 bg-white`}>
                 <div>
                     {
                         image && (
@@ -109,8 +109,8 @@ export function Preview({ title, artist, image, sections, links }) {
                     }
                 </div>
                 <div className="overflow-hidden">
-                    <h1 className="font-bold text-2xl truncate">{title}</h1>
                     <h4 className="text-sm truncate text-gray-600">{artist}</h4>
+                    <h1 className="font-bold text-xl sm:text-2xl truncate">{title}</h1>
                     <div className="flex gap-2 w-full overflow-x-scroll py-1 items-center">
                         {
                             links && links.map(({ id, title, url }) => (
