@@ -3,9 +3,7 @@
 import { Preview } from "@/components/Preview"
 import { Skeleton } from "@nextui-org/react"
 import { revalidatePath } from "next/cache"
-import Link from "next/link"
 import { Suspense } from "react"
-import { BsPencilSquare } from "react-icons/bs"
 
 export async function generateMetadata({ params }) {
     const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`)

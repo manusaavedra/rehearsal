@@ -1,5 +1,7 @@
 import FormSongs from "@/components/FormSongs"
+import { Skeleton } from "@nextui-org/react"
 import { redirect } from "next/navigation"
+import { Suspense } from "react"
 
 export default async function Create({ params }) {
     const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`)
@@ -17,8 +19,33 @@ export default async function Create({ params }) {
 
     return (
         <section>
-            <FormSongs song={song} mode="edit" />
+            <Suspense fallback={<Loading />}>
+                <FormSongs song={song} mode="edit" />
+            </Suspense>
         </section>
+    )
+}
+
+function Loading() {
+    return (
+        <div className="pt-10 p-4">
+            <div className="mb-6 flex flex-col gap-2">
+                <Skeleton className="h-4 w-40 rounded-xl" />
+                <Skeleton className="h-2 w-40 rounded-xl" />
+                <Skeleton className="h-8 w-full rounded-xl" />
+            </div>
+            {
+                Array.from({ length: 5 }).map((_, section) => {
+                    return (
+                        <div key={section} className="mb-4">
+                            <Skeleton className="rounded-xl">
+                                <div className="h-20 w-full"></div>
+                            </Skeleton>
+                        </div>
+                    )
+                })
+            }
+        </div>
     )
 }
 

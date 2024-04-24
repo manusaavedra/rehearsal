@@ -1,3 +1,5 @@
+"use server"
+
 import Link from "next/link"
 import { BsPencilSquare } from "react-icons/bs"
 import { Skeleton } from "@nextui-org/react"
