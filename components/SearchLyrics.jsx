@@ -33,13 +33,20 @@ export default function SearchLyrics({ onSelected }) {
 
         if (request.ok) {
             const result = await request.json()
+
             const lyricsSections = String(result?.lyrics).replace("Paroles de la chanson ", "").split("\n\n")
+
             const sections = lyricsSections.map((lyric) => {
                 return { content: lyric, title: "", id: uuidv4() }
             })
+
             const lyric = { ...metadataMap, sections }
             onSelected(lyric)
+
+            return
         }
+
+        onSelected(metadataMap)
     }
 
     return (
