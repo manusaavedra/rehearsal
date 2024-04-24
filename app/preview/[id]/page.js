@@ -13,7 +13,10 @@ export async function generateMetadata({ params }) {
         const songById = await request.json()
         return {
             title: `${songById.title} | ${songById.artist}`,
-            description: 'Rehearsal tus charts mas fácil.'
+            description: 'Rehearsal tus charts mas fácil.',
+            openGraph: {
+                images: [songById.image || "/icon512_rounded.png"],
+            }
         }
     }
 
