@@ -10,7 +10,7 @@ export default function ImageInput({ onChange, value, alt }) {
                 {
                     value && (
                         <picture>
-                            <img src={value} alt={alt} />
+                            <img src={image} alt={alt} />
                         </picture>
                     )
                 }
