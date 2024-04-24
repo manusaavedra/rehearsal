@@ -114,7 +114,7 @@ export function Preview({ title, artist, image, sections, links }) {
                     <div className="flex gap-2 w-full overflow-x-scroll py-1 items-center">
                         {
                             links && links.map(({ id, title, url }) => (
-                                <a className="px-4 py-1 rounded-full bg-gray-200 text-xs" key={id} href={url} rel="noreferrer" target="_blank">{title}</a>
+                                <a className="px-4 min-w-fit py-1 rounded-full bg-gray-200 text-xs" key={id} href={url} rel="noreferrer" target="_blank">{title}</a>
                             ))
                         }
                     </div>
