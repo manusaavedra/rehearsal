@@ -46,7 +46,8 @@ export default function SearchLyrics({ onSelected }) {
             return
         }
 
-        onSelected(metadataMap)
+        const lyric = { ...metadataMap, sections: [] }
+        onSelected(lyric)
     }
 
     return (
