@@ -41,7 +41,9 @@ export default async function Create({ params }) {
     return (
         <section className="max-w-4xl mx-auto">
             <Suspense fallback={<Loading />}>
-                <Preview {...song} />
+                <section className="h-screen">
+                    <Preview {...song} />
+                </section>
             </Suspense>
         </section>
     )

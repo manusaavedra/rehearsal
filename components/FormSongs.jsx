@@ -15,6 +15,7 @@ import { BsCopy, BsLink45Deg, BsMusicNote, BsSearch, BsTrash } from "react-icons
 import { Button, ButtonGroup } from "@nextui-org/react"
 import ModalButton from "./ModalButton"
 import SearchLyrics from "./SearchLyrics"
+import ImageInput from "./ImageInput"
 
 export default function FormSongs({ song, mode = "create" }) {
     const [sections, setSections] = useState(song?.sections || [])
@@ -144,16 +145,11 @@ export default function FormSongs({ song, mode = "create" }) {
         <main className="min-h-screen grid grid-cols-1 sm:grid-cols-2 gap-2 p-4">
             <div>
                 <h2 className="text-3xl mb-4 font-bold">{isEditable ? 'Editar ' : 'Añadir '} canción</h2>
-                <div className="max-w-32 w-full">
-                    {
-                        image.value && (
-                            <picture>
-                                <img src={image.value} alt={title.value} />
-                            </picture>
-                        )
-                    }
-                    <input type="text" name="image" onChange={image.onChange} value={image.value} />
-                </div>
+                <ImageInput
+                    onChange={image.onChange}
+                    value={image.value}
+                    alt={title.value}
+                />
                 <div className="mb-6">
                     <div className="flex items-center gap-2 flex-nowrap mb-2">
                         <input className="w-full" type="text" onChange={title.onChange} value={title.value} placeholder="Titulo de la canción" />
@@ -253,6 +249,7 @@ export default function FormSongs({ song, mode = "create" }) {
                         <Preview
                             title={title.value}
                             artist={artist.value}
+                            image={image.value}
                             sections={sections}
                         />
                     )
