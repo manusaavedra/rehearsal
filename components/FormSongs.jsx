@@ -26,6 +26,7 @@ export default function FormSongs({ song, mode = "create" }) {
     const id = useRef(song?.id || null)
     const title = useInput(song?.title || "")
     const artist = useInput(song?.artist || "")
+    const image = useInput(song?.image || "")
 
     const handleAddSection = () => {
         setSections((state) => [
@@ -106,6 +107,7 @@ export default function FormSongs({ song, mode = "create" }) {
             id: id.current,
             title: String(title.value).trim(),
             artist: String(artist.value).trim(),
+            image: String(image.value).trim(),
             sections: JSON.stringify(sections),
             links: JSON.stringify(links)
         }
@@ -134,6 +136,7 @@ export default function FormSongs({ song, mode = "create" }) {
     const handleSelected = (lyric) => {
         title.setValue(lyric.title)
         artist.setValue(lyric.artist)
+        image.setValue(lyric.image)
         setSections(lyric.sections)
     }
 
@@ -141,11 +144,21 @@ export default function FormSongs({ song, mode = "create" }) {
         <main className="min-h-screen grid grid-cols-1 sm:grid-cols-2 gap-2 p-4">
             <div>
                 <h2 className="text-3xl mb-4 font-bold">{isEditable ? 'Editar ' : 'Añadir '} canción</h2>
+                <div className="max-w-32 w-full">
+                    {
+                        image.value && (
+                            <picture>
+                                <img src={image.value} alt={title.value} />
+                            </picture>
+                        )
+                    }
+                    <input type="text" name="image" onChange={image.onChange} value={image.value} />
+                </div>
                 <div className="mb-6">
                     <div className="flex items-center gap-2 flex-nowrap mb-2">
                         <input className="w-full" type="text" onChange={title.onChange} value={title.value} placeholder="Titulo de la canción" />
                         {
-                            !isEditable && (
+                            isEditable && (
                                 <ModalButton buttonChildren={<BsSearch size={16} />}>
                                     <div>
                                         <SearchLyrics onSelected={handleSelected} />
@@ -235,11 +248,15 @@ export default function FormSongs({ song, mode = "create" }) {
                 </div>
             </div>
             <section className="h-full hidden sm:block w-full p-4">
-                <Preview
-                    title={title.value}
-                    artist={artist.value}
-                    sections={sections}
-                />
+                {
+                    sections.length > 0 && (
+                        <Preview
+                            title={title.value}
+                            artist={artist.value}
+                            sections={sections}
+                        />
+                    )
+                }
             </section>
         </main>
     )

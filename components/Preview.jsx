@@ -7,7 +7,7 @@ import { Switch, Slider } from "@nextui-org/react";
 import ModalButton from "./ModalButton";
 import { HiOutlineAdjustments } from "react-icons/hi";
 
-export function Preview({ title, artist, sections, links }) {
+export function Preview({ title, artist, image, sections, links }) {
     const [semitone, setSemitone] = useState(0)
     const [showMetadata, setShowMetadata] = useState(true)
     const [showChords, setShowChords] = useState(true)
@@ -95,6 +95,15 @@ export function Preview({ title, artist, sections, links }) {
 
     return (
         <div className="pt-8 p-4">
+            <div className="max-w-32 w-full">
+                {
+                    image && (
+                        <picture>
+                            <img src={image} alt={title} />
+                        </picture>
+                    )
+                }
+            </div>
             <div className="sticky z-20 top-0 left-0 w-full py-2 bg-white">
                 <h1 className="font-bold text-2xl">{title}</h1>
                 <h4 className="text-sm">{artist}</h4>

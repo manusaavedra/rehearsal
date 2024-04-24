@@ -14,9 +14,13 @@ export default async function Home() {
       <Suspense fallback={<Loading />}>
         <div className="mt-4">
           {
-            songs.map(({ id, title, artist }) => (
-              <div className="relative flex items-center border-b" key={id}>
-                <Link className="w-full" href={`/preview/${id}`}>
+            songs.map(({ id, title, image, artist }) => (
+              <div className="relative flex justify-center border-b" key={id}>
+
+                <Link className="w-full grid grid-cols-[60px_1fr] gap-2 items-center" href={`/preview/${id}`}>
+                  <picture className="w-[60px]">
+                    <img src={image ? image : '/icon512_rounded.png'} alt={title} />
+                  </picture>
                   <div className="flex flex-col py-2 justify-center">
                     <h4 className="text-base font-semibold">{title}</h4>
                     <p className="text-gray-800 !mb-0">{artist}</p>
