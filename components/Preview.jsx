@@ -5,6 +5,7 @@ import { SectionIndicator } from "./SectionIndicator";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { Switch, Slider } from "@nextui-org/react";
 import ModalButton from "./ModalButton";
+import { HiOutlineAdjustments } from "react-icons/hi";
 
 export function Preview({ title, artist, sections, links }) {
     const [semitone, setSemitone] = useState(0)
@@ -106,7 +107,7 @@ export function Preview({ title, artist, sections, links }) {
                 }
             </div>
             <div className="my-4">
-                <ModalButton>
+                <ModalButton buttonChildren={<HiOutlineAdjustments size={16} />}>
                     <fieldset className="mb-4 flex flex-col gap-3 py-2 p-2 border rounded-md border-gray-200">
                         <legend className="font-semibold text-center text-sm">Configurar vista</legend>
                         <div className="flex items-center justify-center gap-2">

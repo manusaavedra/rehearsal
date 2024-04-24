@@ -11,8 +11,10 @@ import { SECTIONS_TITLES } from "@/constants"
 import FetchButton from "./FetchButton"
 import revalidateData from "@/actions"
 import Editor from "./Editor"
-import { BsCopy, BsLink45Deg, BsMusicNote, BsTrash } from "react-icons/bs"
+import { BsCopy, BsLink45Deg, BsMusicNote, BsSearch, BsTrash } from "react-icons/bs"
 import { Button, ButtonGroup } from "@nextui-org/react"
+import ModalButton from "./ModalButton"
+import SearchLyrics from "./SearchLyrics"
 
 export default function FormSongs({ song, mode = "create" }) {
     const [sections, setSections] = useState(song?.sections || [])
@@ -129,13 +131,24 @@ export default function FormSongs({ song, mode = "create" }) {
 
     }
 
+    const handleSelected = (lyric) => {
+        title.setValue(lyric.title)
+        artist.setValue(lyric.artist)
+        setSections(lyric.sections)
+    }
+
     return (
         <main className="min-h-screen grid grid-cols-1 sm:grid-cols-2 gap-2 p-4">
             <div>
                 <h2 className="text-3xl mb-4 font-bold">{isEditable ? 'Editar ' : 'Añadir '} canción</h2>
                 <div className="mb-6">
-                    <div className="mb-2">
+                    <div className="flex items-center gap-2 flex-nowrap mb-2">
                         <input className="w-full" type="text" onChange={title.onChange} value={title.value} placeholder="Titulo de la canción" />
+                        <ModalButton buttonChildren={<BsSearch size={16} />}>
+                            <div>
+                                <SearchLyrics onSelected={handleSelected} />
+                            </div>
+                        </ModalButton>
                     </div>
                     <div className="mb-2">
                         <input className="w-full" type="text" onChange={artist.onChange} value={artist.value} placeholder="Artista" />

@@ -6,6 +6,10 @@ p {
     @apply relative mb-4
 }
 
+div::-webkit-scrollbar {
+    display: none;
+}
+
 pre {
     @apply whitespace-pre-wrap font-sans
 }
