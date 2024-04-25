@@ -51,7 +51,7 @@ export default function Editor(props) {
                 {...restProps}
                 innerRef={(textarea) => editor.current = textarea}
                 onChange={handleChange}
-                listClassName="dropdown w-[100px] max-h-[140px] overflow-y-auto shadow-lg border"
+                listClassName="bg-white dropdown w-[100px] max-h-[140px] overflow-y-auto shadow-lg border"
                 movePopupAsYouType={true}
                 loadingComponent={() => <span>Loading</span>}
                 trigger={{
