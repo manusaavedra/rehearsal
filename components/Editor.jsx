@@ -1,9 +1,47 @@
 "use client"
 
 import { CHORDS } from "@/constants"
-import { useInput } from "@/hooks/useInput"
-import { useRef, useState } from "react"
+import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete"
+import { useEffect } from "react"
 
+
+export default function Editor(props) {
+    const Item = ({ entity: { name, char } }) => <div className="chordItem p-2 border-b">{name}</div>
+    const { onChange, ...restProps } = props
+
+    const handleChange = (event) => {
+        onChange(event, props.dataindex)
+    }
+
+    return (
+        <ReactTextareaAutocomplete
+            {...restProps}
+            onChange={handleChange}
+            listClassName="dropdown w-[100px] max-h-[140px] overflow-y-auto shadow-lg border"
+            movePopupAsYouType={true}
+            loadingComponent={() => <span>Loading</span>}
+            trigger={{
+                "[": {
+                    dataProvider: token => {
+                        return CHORDS.flat()
+                            .sort((a, b) => a - b)
+                            .map((chord) => {
+                                return { name: chord, char: `[${chord}]` }
+                            })
+                            .filter((chord) => String(chord.name).includes(token))
+                            .slice(0, 10)
+
+                    },
+                    component: Item,
+                    afterWhitespace: false,
+                    output: (item, _) => item.char
+                }
+            }}
+        />
+    )
+}
+
+/*
 export default function Editor(props) {
     const searchInput = useInput("")
     const [showPopup, setShowPopup] = useState(false)
@@ -107,3 +145,4 @@ export default function Editor(props) {
         </div>
     )
 }
+*/
