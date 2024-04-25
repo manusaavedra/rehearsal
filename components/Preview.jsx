@@ -100,13 +100,9 @@ export function Preview({ title, artist, image, sections, links }) {
         <div className="pt-8 p-4">
             <div className={`sticky grid grid-cols-[60px_1fr_100px] items-center gap-4 z-20 top-0 left-0 w-full py-2 bg-white`}>
                 <div>
-                    {
-                        image && (
-                            <picture className="w-16 block">
-                                <img className="w-full" src={image} alt={title} />
-                            </picture>
-                        )
-                    }
+                    <picture className="w-16 block">
+                        <img className="w-full" src={image ? image : "/icon512_rounded.png"} alt={title} />
+                    </picture>
                 </div>
                 <div className="overflow-hidden">
                     <h4 className="text-sm truncate text-gray-600">{artist}</h4>

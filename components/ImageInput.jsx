@@ -3,7 +3,7 @@ import { Button } from "@nextui-org/react"
 
 export default function ImageInput({ onChange, value, alt }) {
     const editable = useToggle(false)
-    const image = value === "" ? '/icon512_rounded.png' : value
+    const image = value === "" ? "/icon512_rounded.png" : value
 
     return (
         <div className="mb-4 w-full">
