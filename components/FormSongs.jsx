@@ -214,9 +214,6 @@ export default function FormSongs({ song, mode = "create" }) {
                                         }
                                     </select>
                                     <ButtonGroup>
-                                        <Button isDisabled={disabled} onClick={() => { }} isIconOnly >
-                                            <BsMusicNote />
-                                        </Button>
                                         <Button isDisabled={disabled} onClick={() => handleDuplicateSection(section)} isIconOnly >
                                             <BsCopy />
                                         </Button>
