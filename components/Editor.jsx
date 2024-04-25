@@ -4,7 +4,7 @@ import { CHORDS } from "@/constants"
 import { Button } from "@nextui-org/react"
 import ReactTextareaAutocomplete from "@webscopeio/react-textarea-autocomplete"
 import { useRef } from "react"
-import { BsMusicNote } from "react-icons/bs"
+import { TbBracketsContainStart } from "react-icons/tb";
 
 export default function Editor(props) {
     const { onChange, ref, ...restProps } = props
@@ -73,13 +73,29 @@ export default function Editor(props) {
                     }
                 }}
             />
-            <Button
-                className="absolute bottom-4 right-2 w-10 h-10 rounded-full grid place-items-center"
-                onPress={() => setTextEditor("[")}
-                isIconOnly
-            >
-                <BsMusicNote size={18} />
-            </Button>
+            <div className="absolute bottom-4 right-2 flex items-center gap-2">
+                <Button
+                    className="w-6 h-6 p-0 font-semibold rounded-full grid place-items-center"
+                    onPress={() => setTextEditor("[")}
+                    isIconOnly
+                >
+                    {'['}
+                </Button>
+                <Button
+                    className="w-6 h-6 p-0 font-semibold rounded-full grid place-items-center"
+                    onPress={() => setTextEditor("{")}
+                    isIconOnly
+                >
+                    {'{'}
+                </Button>
+                <Button
+                    className="w-6 h-6 p-0 font-semibold rounded-full grid place-items-center"
+                    onPress={() => setTextEditor("}")}
+                    isIconOnly
+                >
+                    {'}'}
+                </Button>
+            </div>
         </section>
     )
 }

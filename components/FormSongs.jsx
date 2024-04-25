@@ -225,7 +225,7 @@ export default function FormSongs({ song, mode = "create" }) {
                                 <Editor
                                     dataindex={index}
                                     disabled={disabled}
-                                    className="w-full contain-content resize-none"
+                                    className="w-full contain-content resize-none pb-4"
                                     name="content"
                                     onChange={handleChangeSection}
                                     value={section.content}
