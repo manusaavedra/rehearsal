@@ -34,6 +34,7 @@ export default function Editor(props) {
                     },
                     component: Item,
                     afterWhitespace: false,
+                    allowWhitespace: false,
                     output: (item, _) => item.char
                 }
             }}
