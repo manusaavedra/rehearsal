@@ -68,7 +68,7 @@ export default function SongListComponent({ data = [], showButtonSetList = true,
     }
 
     return (
-        <div className="mt-4 p-4 pb-10">
+        <div className="p-4 pb-10">
             <div className="sticky bg-white py-2 z-30 top-16">
                 <input className="w-full" onChange={inputSearch.onChange} value={inputSearch.value} type="text" placeholder="Buscar" />
             </div>

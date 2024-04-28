@@ -11,7 +11,7 @@ export default async function Home() {
   const songs = await request.json()
 
   return (
-    <div className="max-w-5xl mx-auto p-4">
+    <div className="max-w-5xl mx-auto">
       <Suspense fallback={<Loading />}>
         <div className="flex flex-col">
           <Link href="/create" prefetch className="fixed bottom-4 right-6 z-20 flex bg-blue-500 rounded-full  text-white p-2 items-center gap-2 font-bold">
