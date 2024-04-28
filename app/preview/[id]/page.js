@@ -25,12 +25,18 @@ export async function generateMetadata({ params }) {
 
 export default async function Create({ params }) {
     const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`)
-    const songById = await request.json()
     revalidatePath('/preview/[id]', 'page')
 
-    if (!songById) {
-        redirect('/')
+    if (!request.ok) {
+        return redirect('/')
     }
+
+    const songById = await request.json()
+
+    if (!songById || songById?.error) {
+        return ('/')
+    }
+
 
     const { sections, links, ...restSong } = songById
     const parseSections = JSON.parse(sections) || []
