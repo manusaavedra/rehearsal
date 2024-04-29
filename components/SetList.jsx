@@ -6,8 +6,9 @@ import useToggle from "@/hooks/useToggle"
 import { Button, ButtonGroup } from "@nextui-org/react"
 import { BsDownload, BsList, BsPencilSquare, BsUpload } from "react-icons/bs"
 import { FiPlus, FiMinus } from "react-icons/fi"
-import Swal from "sweetalert2"
-import { ReactSortable } from "react-sortablejs"
+import io from 'socket.io-client';
+
+const socket = io()
 
 const filterArrayById = (a, b) => {
     const setIds = new Set(b.map(item => item.id))
@@ -52,6 +53,10 @@ export default function SetListComponent({ data = [], showButtonSetList = false,
         reader.readAsText(file)
     }
 
+    const testMessageOverSocketIO = () => {
+        socket.emit("message", JSON.stringify(setlist))
+    }
+
     const SongItem = ({ song }) => {
         const { id, title, image, artist, isSelected } = song
         const setlistHandleClick = () => !isSelected ? handleAddSong(song) : handleRemoveSong(song)
@@ -91,12 +96,9 @@ export default function SetListComponent({ data = [], showButtonSetList = false,
         )
     }
 
-    const updateSetList = (setlist) => {
-        useSetlistStore.setState({ setlist })
-    }
-
     return (
         <div className="mt-4 p-4 pb-10">
+            <span suppressHydrationWarning className="text-[9px]">sId: {socket.id}</span>
             <div>
                 {
                     editing.value && compareSongs.map((song) => (

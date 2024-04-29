@@ -8,31 +8,22 @@ import ModalButton from "./ModalButton";
 import { HiOutlineAdjustments } from "react-icons/hi";
 import useToggle from "@/hooks/useToggle";
 import Image from "./Image";
+import useBuildSearchParams from "@/hooks/useBuildSearchParams";
 
 export function Preview({ title, artist, image, sections, links }) {
     const [semitone, setSemitone] = useState(0)
     const [showMetadata, setShowMetadata] = useState(true)
     const [showChords, setShowChords] = useState(true)
-    const sticky = useToggle(false)
 
-    const router = useRouter()
-    const pathname = usePathname()
+    const { appendQueryString } = useBuildSearchParams()
     const searchParams = useSearchParams()
 
     useEffect(() => {
         const semitone = searchParams.get("semitone")
-        setSemitone(parseInt(semitone ?? 0))
+        const section = searchParams.get("section")
+
+        //setSemitone(parseInt(semitone ?? 0))
     }, [searchParams])
-
-    const createQueryString = useCallback(
-        (name, value) => {
-            const params = new URLSearchParams(searchParams.toString())
-            params.set(name, value)
-
-            return params.toString()
-        },
-        [searchParams]
-    )
 
     const replaceNumbersWithSuperscripts = (text) => {
         return text.replace(/[123456789]/g, (match) => {
@@ -92,9 +83,12 @@ export function Preview({ title, artist, image, sections, links }) {
     }
 
     const handleChangeSemitone = (value) => {
-        const newState = value
-        router.push(pathname + '?' + createQueryString('semitone', newState))
-        setSemitone(newState)
+        appendQueryString("semitone", value)
+        setSemitone(value)
+    }
+
+    const handleChangeSection = (value) => {
+        appendQueryString("section", value)
     }
 
     return (
@@ -168,7 +162,7 @@ export function Preview({ title, artist, image, sections, links }) {
                         visibleMetadata: showMetadata
                     })
                     return (
-                        <fieldset className="mb-4 py-4 pt-6 px-4 border-2 rounded-md border-gray-200" key={section.id}>
+                        <fieldset onClick={() => handleChangeSection(section.title)} className="mb-4 py-4 pt-6 px-4 border-2 rounded-md border-gray-200" key={section.id}>
                             <legend className="font-semibold flex items-center gap-2">
                                 <SectionIndicator sectionTitle={section.title} />
                                 {section.title}

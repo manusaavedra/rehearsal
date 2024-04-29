@@ -7,7 +7,7 @@ import { BsList } from "react-icons/bs";
 export default function Header({ children }) {
     const pathname = usePathname()
     return (
-        <header className="sticky top-0 left-0 z-30 bg-gray-50 shadow-sm flex items-center justify-between px-4 py-2">
+        <header className="bg-gray-50 shadow-sm flex items-center justify-between px-4 py-2">
             <div className="flex flex-col">
                 <Link href="/" prefetch className="text-2xl font-bold">Rehearsal</Link>
                 <span className="text-xs">by Casa de oración</span>

@@ -7,11 +7,11 @@ export default function ImageInput({ onChange, value, alt }) {
 
     return (
         <div className="mb-4 w-full">
-            <div className="relative overflow-hidden max-w-14 h-14">
+            <div className="relative overflow-hidden w-32 h-32">
                 {
                     image && (
-                        <picture className="relative max-w-[120px]">
-                            <img className="w-full" src={image} alt={alt} />
+                        <picture className="w-auto">
+                            <img className="max-w-[120px]" src={image} alt={alt} />
                         </picture>
                     )
                 }
@@ -23,7 +23,7 @@ export default function ImageInput({ onChange, value, alt }) {
             </div>
             {
                 editable.value && (
-                    <input type="text" name="image" placeholder="thumbnail, cover, image" onChange={onChange} value={value} />
+                    <input type="url" name="image" placeholder="URL de la imagen" onChange={onChange} value={value} />
                 )
             }
         </div>
