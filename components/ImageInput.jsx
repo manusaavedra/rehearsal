@@ -7,7 +7,7 @@ export default function ImageInput({ onChange, value, alt }) {
 
     return (
         <div className="mb-4 w-full">
-            <div className="relative max-w-32 h-32">
+            <div className="relative max-w-14 h-14">
                 {
                     image && (
                         <picture className="max-w-[120px]">
