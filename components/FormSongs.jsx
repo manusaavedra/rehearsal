@@ -146,7 +146,6 @@ export default function FormSongs({ song, mode = "create" }) {
             <div>
                 <h2 className="text-3xl mb-4 font-bold">{isEditable ? 'Editar ' : 'Añadir '} canción</h2>
                 <ImageInput
-                    containerClassName="max-w-[120px]"
                     onChange={image.onChange}
                     value={image.value}
                     alt={title.value}
