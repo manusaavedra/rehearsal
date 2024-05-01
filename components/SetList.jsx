@@ -6,9 +6,8 @@ import useToggle from "@/hooks/useToggle"
 import { Button, ButtonGroup } from "@nextui-org/react"
 import { BsDownload, BsList, BsPencilSquare, BsUpload } from "react-icons/bs"
 import { FiPlus, FiMinus } from "react-icons/fi"
-import io from 'socket.io-client';
-
-const socket = io()
+import useSocketStore from "@/hooks/useSocketStore"
+import { ReactSortable } from "react-sortablejs"
 
 const filterArrayById = (a, b) => {
     const setIds = new Set(b.map(item => item.id))
@@ -16,10 +15,11 @@ const filterArrayById = (a, b) => {
     return resultado
 }
 
-export default function SetListComponent({ data = [], showButtonSetList = false, showButtonEdit = true }) {
+export default function SetList({ data = [] }) {
     const editing = useToggle()
-    const setlist = useSetlistStore((state) => state.setlist)
-    const compareSongs = filterArrayById(data, setlist)
+    const { setlist, updateSetlist } = useSetlistStore()
+    const songs = filterArrayById(data, setlist)
+    const { socket } = useSocketStore()
 
     const handleAddSong = (song) => {
         useSetlistStore.setState({ setlist: [...setlist, { ...song, isSelected: true }] })
@@ -53,64 +53,31 @@ export default function SetListComponent({ data = [], showButtonSetList = false,
         reader.readAsText(file)
     }
 
-    const testMessageOverSocketIO = () => {
-        socket.emit("message", JSON.stringify(setlist))
-    }
-
-    const SongItem = ({ song }) => {
-        const { id, title, image, artist, isSelected } = song
-        const setlistHandleClick = () => !isSelected ? handleAddSong(song) : handleRemoveSong(song)
-
-        return (
-            <div className="relative flex justify-center border-b" key={id}>
-                <Link className="w-full grid grid-cols-[60px_1fr] gap-2 items-center" href={`/preview/${id}`}>
-                    <picture className="w-[60px]">
-                        <img src={image ? image : '/icon512_rounded.png'} alt={title} />
-                    </picture>
-                    <div className="flex flex-col w-[80%] py-2 overflow-hidden justify-center">
-                        <h4 className="text-base truncate text-ellipsis font-semibold">{title}</h4>
-                        <p title={artist} className="text-gray-800 truncate overflow-ellipsis !mb-0">{artist}</p>
-                    </div>
-                </Link>
-                <div className="absolute top-0 h-full right-2 flex items-center gap-4">
-                    {
-                        showButtonSetList && (
-                            <button onClick={setlistHandleClick}>
-                                {
-                                    isSelected
-                                        ? <FiMinus size={24} />
-                                        : <FiPlus size={24} />
-                                }
-                            </button>
-                        )
-                    }
-                    {
-                        showButtonEdit && (
-                            <Link href={`/create/${id}`}>
-                                <BsPencilSquare size={24} />
-                            </Link>
-                        )
-                    }
-                </div>
-            </div>
-        )
-    }
-
     return (
         <div className="mt-4 p-4 pb-10">
-            <span suppressHydrationWarning className="text-[9px]">sId: {socket.id}</span>
             <div>
+                <ReactSortable list={setlist} setList={updateSetlist}>
+                    {
+                        setlist
+                            .map((song) => (
+                                <SongItem
+                                    key={song.id}
+                                    song={song}
+                                    handleAddSong={handleAddSong}
+                                    handleRemoveSong={handleRemoveSong}
+                                />
+                            ))
+                    }
+                </ReactSortable>
                 {
-                    editing.value && compareSongs.map((song) => (
-                        <SongItem key={song.id} song={song} />
+                    editing.value && songs.map((song) => (
+                        <SongItem
+                            key={song.id}
+                            song={song}
+                            handleAddSong={handleAddSong}
+                            handleRemoveSong={handleRemoveSong}
+                        />
                     ))
-                }
-                {
-                    !editing.value && setlist
-                        .filter((s) => s?.isSelected)
-                        .map((song) => (
-                            <SongItem key={song.id} song={song} />
-                        ))
                 }
             </div>
             <section className="fixed bottom-4 left-0 w-full flex justify-center">
@@ -134,6 +101,34 @@ export default function SetListComponent({ data = [], showButtonSetList = false,
                     </Button>
                 </ButtonGroup>
             </section>
+        </div>
+    )
+}
+
+function SongItem({ song, handleAddSong, handleRemoveSong }) {
+    const { id, title, image, artist, isSelected } = song
+    const setlistHandleClick = isSelected ? handleRemoveSong : handleAddSong
+
+    return (
+        <div className={`relative flex justify-center border-b`}>
+            <Link className={`${!isSelected ? 'opacity-30' : 'opacity-100'} w-full grid grid-cols-[60px_1fr] gap-2 items-center`} href={`/preview/${id}`}>
+                <picture className="w-[60px]">
+                    <img src={image ? image : '/icon512_rounded.png'} alt={title} />
+                </picture>
+                <div className="flex flex-col w-[80%] py-2 overflow-hidden justify-center">
+                    <h4 className="text-base truncate text-ellipsis font-semibold">{title}</h4>
+                    <p title={artist} className="text-gray-800 truncate overflow-ellipsis !mb-0">{artist}</p>
+                </div>
+            </Link>
+            <div className="absolute top-0 h-full right-2 flex items-center gap-4">
+                <button onClick={() => setlistHandleClick(song)}>
+                    {
+                        isSelected
+                            ? <FiMinus size={24} />
+                            : <FiPlus size={24} />
+                    }
+                </button>
+            </div>
         </div>
     )
 }

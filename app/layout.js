@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { BsPlus } from "react-icons/bs"
 import NextUIProviders from '@/components/NextUIProvider'
 import Header from '@/components/Header'
+import SocketProvider from '@/components/SocketProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,9 +18,11 @@ export default function RootLayout({ children }) {
     <html suppressHydrationWarning={true} lang="es">
       <body className={inter.className}>
         <Header />
-        <NextUIProviders>
-          {children}
-        </NextUIProviders>
+        <SocketProvider>
+          <NextUIProviders>
+            {children}
+          </NextUIProviders>
+        </SocketProvider>
       </body>
     </html>
   )

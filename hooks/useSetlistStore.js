@@ -3,8 +3,11 @@ import { persist } from 'zustand/middleware'
 
 export const useSetlistStore = create(
     persist(
-        () => ({
-            setlist: []
+        (set) => ({
+            setlist: [],
+            updateSetlist: (setlist) => {
+                set({ setlist })
+            }
         }),
         {
             name: 'setlist-storage'
