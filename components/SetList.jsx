@@ -19,7 +19,6 @@ export default function SetList({ data = [] }) {
     const editing = useToggle()
     const { setlist, updateSetlist } = useSetlistStore()
     const songs = filterArrayById(data, setlist)
-    const { socket } = useSocketStore()
 
     const handleAddSong = (song) => {
         useSetlistStore.setState({ setlist: [...setlist, { ...song, isSelected: true }] })
