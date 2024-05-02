@@ -1,3 +1,5 @@
+//https://www.letras.com/?q=llamado%20a%20mi%20destino
+
 export async function GET(req) {
     const searchParams = req.nextUrl.searchParams
     const query = searchParams.get('q')
