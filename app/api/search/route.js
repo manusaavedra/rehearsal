@@ -1,14 +1,3 @@
-//https://www.letras.com/?q=llamado%20a%20mi%20destino
-/* 
-    {
-        id: hit.result.id,
-        title: hit.result.title,
-        artist: hit.result.artist_names,
-        image: hit.result.header_image_thumbnail_url,
-        lyricsUrl: hit.result.url
-    }
-*/
-
 import { revalidateTag } from "next/cache"
 
 export async function GET(req) {
