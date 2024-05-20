@@ -20,6 +20,7 @@ export const SECTIONS_TITLES = [
     "PUENTE 4",
     "INSTRUMENTAL",
     "SOLO",
+    "BUCLE",
     "EXHORTACIÓN",
     "FINAL"
 ]
