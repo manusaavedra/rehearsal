@@ -35,11 +35,11 @@ export default function SongListComponent({ data = [], showButtonSetList = true,
         return (
             <div className="relative flex justify-center border-b" key={id}>
                 <Link className="w-full grid grid-cols-[60px_1fr] gap-2 items-center" href={`/preview/${id}`}>
-                    <picture className="w-[60px]">
+                    <picture className="w-[60px] h-[60px] overflow-hidden flex items-center">
                         <img src={image ? image : '/icon512_rounded.png'} alt={title} />
                     </picture>
                     <div className="flex flex-col w-[80%] py-2 overflow-hidden justify-center">
-                        <h4 className="text-base truncate text-ellipsis font-semibold">{title}</h4>
+                        <h4 className="text-base truncate text-ellipsis uppercase font-semibold">{title}</h4>
                         <p title={artist} className="text-gray-800 truncate overflow-ellipsis !mb-0">{artist}</p>
                     </div>
                 </Link>
@@ -78,6 +78,8 @@ export default function SongListComponent({ data = [], showButtonSetList = true,
                         .filter((song) => {
                             return String(song.title).toLowerCase()
                                 .includes(String(inputSearch.value).toLowerCase())
+                                || String(song.artist).toLowerCase()
+                                    .includes(String(inputSearch.value).toLowerCase())
                         })
                         .map((song) => (
                             <SongItem key={song.id} song={song} />

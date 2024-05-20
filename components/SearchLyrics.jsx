@@ -13,14 +13,19 @@ import * as cheerio from 'cheerio';
 export default function SearchLyrics({ onSelected }) {
     const searchInput = useInput("")
     const [results, setResults] = useState([])
+    const [loading, setLoading] = useState(false)
 
     const debounced = useDebouncedCallback((value) => {
         if (String(value).length > 0) {
+            setLoading(true)
             fetch(`/api/search?q=${value}`)
                 .then((res) => res.json())
                 .then((result) => setResults(result))
+                .finally(() => {
+                    setLoading(false)
+                })
         }
-    }, 300)
+    }, 700)
 
     const handleChange = (e) => {
         searchInput.onChange(e)
@@ -33,9 +38,11 @@ export default function SearchLyrics({ onSelected }) {
 
         if (text) {
             const $ = cheerio.load(text);
-            const html = $("[data-lyrics-container='true']").html()
-            const textLyrics = html.replace(/\s*<br>\s*/g, '\n')
-            const sectionsArray = textLyrics.split("\n\n")
+            const blocks = $(".lyric-original > p")
+
+            const sectionsArray = blocks.map((_, el) => {
+                return $(el).html().replace(/\s*<br>\s*/g, '\n')
+            }).toArray()
 
             const sections = sectionsArray.map((section) => {
                 return { id: uuidv4(), title: "", content: section }
@@ -54,8 +61,15 @@ export default function SearchLyrics({ onSelected }) {
     return (
         <div className="bg-red relative grid grid-rows-[60px_1fr] w-full h-96 text-black">
             <div className="mb-4">
-                <input className="w-full" type="text" onChange={handleChange} value={searchInput.value} placeholder="Buscar en genius.com" />
+                <input className="w-full" type="text" onChange={handleChange} value={searchInput.value} placeholder="Buscar en letras.com 💓" />
             </div>
+            {
+                loading && (
+                    <div>
+                        <p>Resultados desde letras.com 💓</p>
+                    </div>
+                )
+            }
             <div className="bg-white w-full overflow-y-auto">
                 <ul>
                     {

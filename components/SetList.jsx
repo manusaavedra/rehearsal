@@ -111,11 +111,11 @@ function SongItem({ song, handleAddSong, handleRemoveSong }) {
     return (
         <div className={`relative flex justify-center border-b`}>
             <Link className={`${!isSelected ? 'opacity-30' : 'opacity-100'} w-full grid grid-cols-[60px_1fr] gap-2 items-center`} href={`/preview/${id}`}>
-                <picture className="w-[60px]">
+                <picture className="w-[60px] h-[60px] flex items-center">
                     <img src={image ? image : '/icon512_rounded.png'} alt={title} />
                 </picture>
                 <div className="flex flex-col w-[80%] py-2 overflow-hidden justify-center">
-                    <h4 className="text-base truncate text-ellipsis font-semibold">{title}</h4>
+                    <h4 className="text-base truncate text-ellipsis uppercase font-semibold">{title}</h4>
                     <p title={artist} className="text-gray-800 truncate overflow-ellipsis !mb-0">{artist}</p>
                 </div>
             </Link>

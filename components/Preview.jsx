@@ -96,15 +96,15 @@ export function Preview({ title, artist, image, sections, links }) {
             <div className={`sticky grid grid-cols-[60px_1fr_100px] items-center gap-4 z-20 top-0 left-0 w-full py-2 bg-white`}>
                 <div>
                     <Image
-                        containerClassName="w-16 block"
-                        className="w-full"
+                        containerClassName="w-16 h-16 overflow-hidden flex items-center"
+                        className="w-full m-auto"
                         src={image ? image : "/icon512_rounded.png"}
                         alt={title}
                     />
                 </div>
                 <div className="overflow-hidden">
                     <h4 title={artist} className="text-sm truncate">{artist}</h4>
-                    <h1 title={title} className="font-bold text-xl sm:text-2xl truncate">{title}</h1>
+                    <h1 title={title} className="font-bold text-xl sm:text-2xl uppercase truncate">{title}</h1>
                     <div className="flex gap-2 w-full overflow-x-scroll py-1 items-center">
                         {
                             links && links.map(({ id, title, url }) => (
