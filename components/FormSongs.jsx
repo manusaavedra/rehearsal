@@ -141,6 +141,11 @@ export default function FormSongs({ song, mode = "create" }) {
         setSections(lyric.sections)
     }
 
+    const handleLinkRemove = (dlink) => {
+        const newLinks = links.filter((link) => link.id !== dlink.id)
+        setLinks(newLinks)
+    }
+
     return (
         <main className="min-h-screen grid grid-cols-1 sm:grid-cols-2 gap-2 p-4">
             <div>
@@ -170,12 +175,19 @@ export default function FormSongs({ song, mode = "create" }) {
                 <div className="my-6">
                     {
                         links.map((link, index) => (
-                            <div className="flex flex-col gap-2 border p-2 rounded-md shadow-md mb-4" key={link.id}>
-                                <div>
-                                    <input className="w-full" name="title" type="text" onChange={(event) => { handleChangeLink(event, index) }} value={link.title} placeholder="Nombre de Link" />
+                            <div key={link.id} className="flex items-center gap-2">
+                                <div className="flex flex-col gap-2 border p-2 rounded-md shadow-md mb-4">
+                                    <div>
+                                        <input className="w-full" name="title" type="text" onChange={(event) => { handleChangeLink(event, index) }} value={link.title} placeholder="Nombre de Link" />
+                                    </div>
+                                    <div>
+                                        <input className="w-full" name="url" type="text" onChange={(event) => { handleChangeLink(event, index) }} value={link.url} placeholder="URL" />
+                                    </div>
                                 </div>
                                 <div>
-                                    <input className="w-full" name="url" type="text" onChange={(event) => { handleChangeLink(event, index) }} value={link.url} placeholder="URL" />
+                                    <button onClick={() => handleLinkRemove(link)} className="flex items-center justify-center bg-red-500 text-white font-semibold h-8 w-8 rounded-md">
+                                        <BsTrash size={24} />
+                                    </button>
                                 </div>
                             </div>
                         ))
