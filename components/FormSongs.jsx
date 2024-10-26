@@ -175,7 +175,7 @@ export default function FormSongs({ song, mode = "create" }) {
                 <div className="my-6">
                     {
                         links.map((link, index) => (
-                            <div key={link.id} className="flex items-center gap-2">
+                            <div key={link.id} className="grid grid-cols-[1fr,30px] items-center gap-2">
                                 <div className="flex flex-col gap-2 border p-2 rounded-md shadow-md mb-4">
                                     <div>
                                         <input className="w-full" name="title" type="text" onChange={(event) => { handleChangeLink(event, index) }} value={link.title} placeholder="Nombre de Link" />
