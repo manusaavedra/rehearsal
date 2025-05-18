@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 
 export default async function revalidateData(id) {
-    revalidatePath(`/preview/${id}`, 'page')
-    revalidatePath(`/create/${id}`, 'page')
+    revalidatePath(`/preview/${id}`)
+    revalidatePath(`/create/${id}`)
     revalidatePath('/', 'page')
 }
