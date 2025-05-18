@@ -5,6 +5,7 @@ import { Suspense } from "react"
 
 export default async function Create({ params }) {
     const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`)
+    revalidatePath(`/create/${params.id}`, 'page')
     const songById = await request.json()
 
     if (!songById) {
