@@ -6,9 +6,7 @@ import { Suspense } from "react"
 
 export async function generateMetadata({ params }) {
     const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`, {
-        next: {
-            tags: ['song'],
-        },
+        cache: 'no-store'
     })
 
     if (request.ok) {
@@ -27,9 +25,7 @@ export async function generateMetadata({ params }) {
 
 export default async function Create({ params }) {
     const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`, {
-        next: {
-            tags: ['song'],
-        },
+        cache: 'no-store'
     })
 
     if (!request.ok) {

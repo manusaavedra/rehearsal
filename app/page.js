@@ -7,7 +7,9 @@ import { Suspense } from "react"
 import SongListComponent from "@/components/SongList"
 
 export default async function Home() {
-  const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs`)
+  const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs`, {
+    cache: 'no-store'
+  })
   const songs = await request.json()
 
   return (
