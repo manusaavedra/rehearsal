@@ -2,7 +2,6 @@
 
 import { Preview } from "@/components/Preview"
 import { Skeleton } from "@nextui-org/react"
-import { revalidatePath } from "next/cache"
 import { Suspense } from "react"
 
 export async function generateMetadata({ params }) {
