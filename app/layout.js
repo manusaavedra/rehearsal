@@ -1,7 +1,5 @@
 import { Inter } from 'next/font/google'
 import './globals.css'
-import Link from 'next/link'
-import { BsPlus } from "react-icons/bs"
 import NextUIProviders from '@/components/NextUIProvider'
 import Header from '@/components/Header'
 import SocketProvider from '@/components/SocketProvider'

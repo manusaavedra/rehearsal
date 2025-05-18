@@ -1,3 +1,5 @@
+"use server"
+
 import FormSongs from "@/components/FormSongs"
 import { Skeleton } from "@nextui-org/react"
 import { redirect } from "next/navigation"
