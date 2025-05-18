@@ -122,7 +122,7 @@ export default function FormSongs({ song, mode = "create" }) {
             const newsong = await request.json()
             id.current = newsong.id
 
-            await revalidateData()
+            await revalidateData(newsong.id)
 
             Swal.fire({
                 text: `[${song.title}], se ha guardado correctamente`,
