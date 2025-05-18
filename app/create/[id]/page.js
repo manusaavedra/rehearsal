@@ -4,8 +4,9 @@ import { redirect } from "next/navigation"
 import { Suspense } from "react"
 
 export default async function Create({ params }) {
-    const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`)
-    revalidatePath(`/create/${params.id}`, 'page')
+    const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`, {
+        cache: 'force-cache',
+    })
     const songById = await request.json()
 
     if (!songById) {

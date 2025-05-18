@@ -6,8 +6,9 @@ import { revalidatePath } from "next/cache"
 import { Suspense } from "react"
 
 export async function generateMetadata({ params }) {
-    const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`)
-    revalidatePath(`/preview/${params.id}`, 'page')
+    const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`, {
+        cache: 'force-cache',
+    })
 
     if (request.ok) {
         const songById = await request.json()
@@ -24,8 +25,9 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Create({ params }) {
-    const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`)
-    revalidatePath(`/preview/${params.id}`, 'page')
+    const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`, {
+        cache: 'force-cache',
+    })
 
     if (!request.ok) {
         return redirect('/')
