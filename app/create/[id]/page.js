@@ -5,7 +5,7 @@ import { Suspense } from "react"
 
 export default async function Create({ params }) {
     const request = await fetch(`${process.env.NEXT_HOSTNAME}/api/songs/${params.id}`, {
-        cache: 'force-cache',
+        cache: 'no-store',
     })
     const songById = await request.json()
 
