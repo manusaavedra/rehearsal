@@ -1,3 +1,4 @@
+// añadir colores a cada seccion
 export const SECTIONS_TITLES = [
     "INTRO",
     "VERSO",

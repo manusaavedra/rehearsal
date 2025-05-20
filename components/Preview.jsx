@@ -83,7 +83,6 @@ export function Preview({ title, artist, image, sections, links }) {
     }
 
     const handleChangeSemitone = (value) => {
-        appendQueryString("semitone", value)
         setSemitone(value)
     }
 
@@ -122,6 +121,7 @@ export function Preview({ title, artist, image, sections, links }) {
                                     size="md"
                                     step={1}
                                     onChange={handleChangeSemitone}
+                                    onChangeEnd={() => appendQueryString("semitone", semitone)}
                                     label="Transpose"
                                     showSteps={true}
                                     maxValue={12}
