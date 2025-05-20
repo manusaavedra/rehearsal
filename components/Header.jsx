@@ -10,7 +10,6 @@ export default function Header({ children }) {
         <header className="bg-gray-50 shadow-sm flex items-center justify-between px-4 py-2">
             <div className="flex flex-col">
                 <Link href="/" prefetch className="text-2xl font-bold">Rehearsal</Link>
-                <span className="text-xs">by Casa de oración</span>
             </div>
             {children}
             {
