@@ -1,10 +1,8 @@
 "use client"
 
 import { useInput } from "@/hooks/useInput";
-import { useSetlistStore, useSongStore } from "@/hooks/useSetlistStore";
-import useToggle from "@/hooks/useToggle";
+import { useSetlistStore } from "@/hooks/useSetlistStore";
 import Link from "next/link";
-import { useEffect } from "react";
 import { BsPencilSquare } from "react-icons/bs";
 import { FiPlus, FiMinus } from "react-icons/fi";
 
@@ -33,7 +31,7 @@ export default function SongListComponent({ data = [], showButtonSetList = true,
         const setlistHandleClick = () => !isSelected ? handleAddSong(song) : handleRemoveSong(song)
 
         return (
-            <div className="relative flex justify-center border-b" key={id}>
+            <div className="relative grid grid-cols-[1fr_100px] border-b" key={id}>
                 <Link className="w-full grid grid-cols-[60px_1fr] gap-2 items-center" href={`/preview/${id}`}>
                     <picture className="w-[60px] h-[60px] overflow-hidden flex items-center">
                         <img src={image ? image : '/icon512_rounded.png'} alt={title} />
@@ -43,14 +41,14 @@ export default function SongListComponent({ data = [], showButtonSetList = true,
                         <p title={artist} className="text-gray-800 truncate overflow-ellipsis !mb-0">{artist}</p>
                     </div>
                 </Link>
-                <div className="absolute top-0 h-full right-2 flex items-center gap-4">
+                <div className="h-full flex items-center gap-4">
                     {
                         showButtonSetList && (
                             <button onClick={setlistHandleClick}>
                                 {
                                     isSelected
-                                        ? <FiMinus size={24} />
-                                        : <FiPlus size={24} />
+                                        ? <FiMinus size={26} />
+                                        : <FiPlus size={26} />
                                 }
                             </button>
                         )

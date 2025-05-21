@@ -16,10 +16,10 @@ export default async function Home() {
     <div className="max-w-5xl mx-auto">
       <Suspense fallback={<Loading />}>
         <div className="flex flex-col">
-          <Link href="/create" prefetch className="fixed bottom-4 right-6 z-20 flex bg-blue-500 rounded-full  text-white p-2 items-center gap-2 font-bold">
+          <Link href="/create" prefetch className="fixed bottom-4 right-6 z-20 flex bg-black rounded-full text-white p-3 items-center gap-2 font-bold">
             <BsPlus
               size={24} />
-            <span className="hidden sm:block">Nueva Canción</span>
+            <span>Nueva Canción</span>
           </Link>
         </div>
         <SongListComponent data={songs} showButtonSetList={true} />
