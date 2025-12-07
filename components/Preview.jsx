@@ -163,21 +163,24 @@ export function Preview({ title, artist, image, sections, links }) {
         }
 
         // Siempre convertir todas las secciones juntas y unirlas con dos saltos de línea
-        const all = sections.map((section) => {
+        const safeTitle = (`${title}_${artist}` || 'song').replace(/[^a-z0-9_\- ]/gi, '')
+        const formatSections = sections.map((section) => {
             const chart = chordFormat(section.content, semitone, {
                 visibleChords: showChords,
                 visibleMetadata: showMetadata
             })
             const text = convertSingle(chart)
             return `${section.title}\n${text}`
-        }).join('\n\n')
+        }).join('\n\n\n')
+
+        const all = safeTitle + "\n\n" + formatSections
 
         try {
             const blob = new Blob([all], { type: 'text/plain;charset=utf-8' })
             const url = URL.createObjectURL(blob)
             const a = document.createElement('a')
             a.href = url
-            const safeTitle = (`${title}_${artist}` || 'song').replace(/[^a-z0-9_\- ]/gi, '')
+
             a.download = `${safeTitle || 'song'}.txt`
             document.body.appendChild(a)
             a.click()
