@@ -127,7 +127,7 @@ export function Preview({ title, artist, image, sections, links }) {
 
     return (
         <div className="pt-8 p-4">
-            <div className={`sticky grid grid-cols-[60px_1fr] items-center gap-4 z-20 top-0 left-0 w-full py-2 bg-white`}>
+            <div className={`sticky print:relative grid grid-cols-[60px_1fr] items-center gap-4 z-20 top-0 left-0 w-full py-2 bg-white`}>
                 <div>
                     {
                         image ? <Image
