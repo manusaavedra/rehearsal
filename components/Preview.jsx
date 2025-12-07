@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { SectionIndicator } from "./SectionIndicator";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
-import { Switch, Slider } from "@nextui-org/react";
+import { Switch, Slider, Button } from "@nextui-org/react";
 import ModalButton from "./ModalButton";
 import { HiOutlineAdjustments } from "react-icons/hi";
 import useToggle from "@/hooks/useToggle";
@@ -73,6 +73,41 @@ export function Preview({ title, artist, image, sections, links }) {
         return format;
     }
 
+    const htmlToPlainTextWithChords = (htmlText) => {
+        // Crear un elemento temporal para parsear el HTML
+        const parser = new DOMParser()
+        const doc = parser.parseFromString(htmlText, 'text/html')
+
+        let plainText = ''
+
+        const processNode = (node) => {
+            if (node.nodeType === 3) { // Nodo de texto
+                plainText += node.textContent
+            } else if (node.nodeType === 1) { // Nodo de elemento
+                if (node.classList.contains('chord')) {
+                    // Si es un chord, agregarlo en una línea separada
+                    plainText += `\n[${node.textContent}]\n`
+                } else if (node.tagName === 'P' || node.tagName === 'PRE') {
+                    // Procesar hijos
+                    node.childNodes.forEach(processNode)
+                    if (node.tagName === 'P') {
+                        plainText += '\n'
+                    }
+                } else {
+                    // Procesar otros elementos normalmente
+                    node.childNodes.forEach(processNode)
+                }
+            }
+        }
+
+        doc.body.childNodes.forEach(processNode)
+
+        // Limpiar espacios en blanco excesivos
+        return plainText
+            .replace(/\n\n+/g, '\n') // Eliminar múltiples saltos de línea
+            .trim()
+    }
+
     function transposeChord(chord, amount) {
         const scale = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
         const normalizeMap = { "Cb": "B", "Db": "C#", "Eb": "D#", "Fb": "E", "Gb": "F#", "Ab": "G#", "Bb": "A#", "E#": "F", "B#": "C" }
@@ -92,7 +127,7 @@ export function Preview({ title, artist, image, sections, links }) {
 
     return (
         <div className="pt-8 p-4">
-            <div className={`sticky grid grid-cols-[60px_1fr_100px] items-center gap-4 z-20 top-0 left-0 w-full py-2 bg-white`}>
+            <div className={`sticky grid grid-cols-[60px_1fr] items-center gap-4 z-20 top-0 left-0 w-full py-2 bg-white`}>
                 <div>
                     <Image
                         containerClassName="w-16 h-16 overflow-hidden flex items-center"
@@ -103,7 +138,7 @@ export function Preview({ title, artist, image, sections, links }) {
                 </div>
                 <div className="overflow-hidden">
                     <h4 title={artist} className="text-sm truncate">{artist}</h4>
-                    <h1 title={title} className="font-bold text-xl sm:text-2xl uppercase truncate">{title}</h1>
+                    <h1 title={title} className="font-bold text-base sm:text-2xl uppercase">{title}</h1>
                     <div className="flex gap-2 w-full overflow-x-scroll py-1 items-center">
                         {
                             links && links.map(({ id, title, url }) => (
@@ -112,47 +147,50 @@ export function Preview({ title, artist, image, sections, links }) {
                         }
                     </div>
                 </div>
-                <div className="my-4">
-                    <ModalButton buttonChildren={<HiOutlineAdjustments size={24} />}>
-                        <fieldset className="mb-4 flex flex-col gap-3 py-2 p-2 border rounded-md border-gray-200">
-                            <legend className="font-semibold text-center text-sm">Configurar vista</legend>
-                            <div className="flex items-center justify-center gap-2">
-                                <Slider
-                                    size="md"
-                                    step={1}
-                                    onChange={handleChangeSemitone}
-                                    onChangeEnd={() => appendQueryString("semitone", semitone)}
-                                    label="Transpose"
-                                    showSteps={true}
-                                    maxValue={12}
-                                    minValue={-12}
-                                    defaultValue={0}
-                                    value={semitone}
-                                    className="max-w-md"
-                                />
-                            </div>
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-center gap-4">
-                                <div>
-                                    <Switch
-                                        isSelected={showChords}
-                                        onChange={(e) => setShowChords(e.target.checked)}
+                <div className="flex items-center gap-2">
+                    <div className="my-4 print:hidden">
+                        <ModalButton buttonChildren={<HiOutlineAdjustments size={24} />}>
+                            <fieldset className="mb-4 flex flex-col gap-3 py-2 p-2 border rounded-md border-gray-200">
+                                <legend className="font-semibold text-center text-sm">Configurar vista</legend>
+                                <div className="flex items-center justify-center gap-2">
+                                    <Slider
                                         size="md"
-                                    >
-                                        <span>Acordes</span>
-                                    </Switch>
+                                        step={1}
+                                        onChange={handleChangeSemitone}
+                                        onChangeEnd={() => appendQueryString("semitone", semitone)}
+                                        label="Transpose"
+                                        showSteps={true}
+                                        maxValue={12}
+                                        minValue={-12}
+                                        defaultValue={0}
+                                        value={semitone}
+                                        className="max-w-md"
+                                    />
                                 </div>
-                                <div>
-                                    <Switch
-                                        isSelected={showMetadata}
-                                        onChange={(e) => setShowMetadata(e.target.checked)}
-                                        size="md"
-                                    >
-                                        <span>Comentarios</span>
-                                    </Switch>
+                                <div className="flex flex-col sm:flex-row sm:items-center justify-center gap-4">
+                                    <div>
+                                        <Switch
+                                            isSelected={showChords}
+                                            onChange={(e) => setShowChords(e.target.checked)}
+                                            size="md"
+                                        >
+                                            <span>Acordes</span>
+                                        </Switch>
+                                    </div>
+                                    <div>
+                                        <Switch
+                                            isSelected={showMetadata}
+                                            onChange={(e) => setShowMetadata(e.target.checked)}
+                                            size="md"
+                                        >
+                                            <span>Comentarios</span>
+                                        </Switch>
+                                    </div>
                                 </div>
-                            </div>
-                        </fieldset>
-                    </ModalButton>
+                            </fieldset>
+                        </ModalButton>
+                    </div>
+                    <Button className="print:hidden bg-black text-white font-semibold !w-full text-center" onPress={() => window.print()}>Imprimir</Button>
                 </div>
             </div>
             {
@@ -162,7 +200,7 @@ export function Preview({ title, artist, image, sections, links }) {
                         visibleMetadata: showMetadata
                     })
                     return (
-                        <fieldset onClick={() => handleChangeSection(section.title)} className="mb-4 py-4 pt-6 px-4 border-2 rounded-md border-gray-200" key={section.id}>
+                        <fieldset onClick={() => handleChangeSection(section.title)} className="mb-4 py-4 pt-6 px-4 border-2 rounded-md border-gray-200 print:break-inside-avoid" key={section.id}>
                             <legend className="font-semibold flex items-center gap-2">
                                 <SectionIndicator sectionTitle={section.title} />
                                 {section.title}

@@ -14,7 +14,7 @@ export default function Header({ children }) {
             {children}
             {
                 pathname !== '/setlist' && (
-                    <Link href="/setlist" prefetch className="flex bg-gray-200 p-2 rounded-md items-center gap-2 font-bold">
+                    <Link href="/setlist" prefetch className="flex print:hidden bg-gray-200 p-2 rounded-md items-center gap-2 font-bold">
                         <BsList
                             size={24} />
                         SetList
