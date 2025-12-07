@@ -42,7 +42,7 @@ export default function SongListComponent({ data = [], showButtonSetList = true,
                     </div>
                 </Link>
                 <div className="h-full flex items-center gap-4">
-                    {
+                    {/*
                         showButtonSetList && (
                             <button onClick={setlistHandleClick}>
                                 {
@@ -52,7 +52,7 @@ export default function SongListComponent({ data = [], showButtonSetList = true,
                                 }
                             </button>
                         )
-                    }
+                    */}
                     {
                         showButtonEdit && (
                             <Link href={`/create/${id}`}>

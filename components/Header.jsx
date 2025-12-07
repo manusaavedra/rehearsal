@@ -12,7 +12,7 @@ export default function Header({ children }) {
                 <Link href="/" prefetch className="text-2xl font-bold">Rehearsal</Link>
             </div>
             {children}
-            {
+            {/*
                 pathname !== '/setlist' && (
                     <Link href="/setlist" prefetch className="flex print:hidden bg-gray-200 p-2 rounded-md items-center gap-2 font-bold">
                         <BsList
@@ -20,7 +20,7 @@ export default function Header({ children }) {
                         SetList
                     </Link>
                 )
-            }
+            */}
         </header>
     )
 }

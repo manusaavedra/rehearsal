@@ -177,7 +177,7 @@ export function Preview({ title, artist, image, sections, links }) {
             const url = URL.createObjectURL(blob)
             const a = document.createElement('a')
             a.href = url
-            const safeTitle = (title || 'song').replace(/[^a-z0-9_\- ]/gi, '')
+            const safeTitle = (`${title}_${artist}` || 'song').replace(/[^a-z0-9_\- ]/gi, '')
             a.download = `${safeTitle || 'song'}.txt`
             document.body.appendChild(a)
             a.click()
