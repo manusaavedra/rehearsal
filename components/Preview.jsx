@@ -123,7 +123,7 @@ export function Preview({ title, artist, image, sections, links }) {
                 if (chordLine.trim()) {
                     linesOut.push(chordLine)
                 }
-                linesOut.push(textLine.replace(/\s+$/g, ''))
+                linesOut.push(textLine)
             }
 
             doc.body.childNodes.forEach((node) => {
