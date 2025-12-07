@@ -129,12 +129,14 @@ export function Preview({ title, artist, image, sections, links }) {
         <div className="pt-8 p-4">
             <div className={`sticky grid grid-cols-[60px_1fr] items-center gap-4 z-20 top-0 left-0 w-full py-2 bg-white`}>
                 <div>
-                    <Image
-                        containerClassName="w-16 h-16 overflow-hidden flex items-center"
-                        className="w-full m-auto"
-                        src={image ? image : "/icon512_rounded.png"}
-                        alt={title}
-                    />
+                    {
+                        image ? <Image
+                            containerClassName="w-16 h-16 overflow-hidden flex items-center"
+                            className="w-full m-auto"
+                            src={image}
+                            alt={title}
+                        /> : <div className="w-16 h-16 bg-gray-200 border-2 border-black rounded-full"></div>
+                    }
                 </div>
                 <div className="overflow-hidden">
                     <h4 title={artist} className="text-sm truncate">{artist}</h4>
