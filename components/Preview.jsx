@@ -1,13 +1,14 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { SectionIndicator } from "./SectionIndicator";
-import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Switch, Slider, Button } from "@nextui-org/react";
 import ModalButton from "./ModalButton";
 import { HiOutlineAdjustments } from "react-icons/hi";
-import useToggle from "@/hooks/useToggle";
 import Image from "./Image";
+import { FaPrint } from "react-icons/fa"
+import { TbFileTypeTxt } from "react-icons/tb"
 import useBuildSearchParams from "@/hooks/useBuildSearchParams";
 
 export function Preview({ title, artist, image, sections, links }) {
@@ -74,38 +75,117 @@ export function Preview({ title, artist, image, sections, links }) {
     }
 
     const htmlToPlainTextWithChords = (htmlText) => {
-        // Crear un elemento temporal para parsear el HTML
-        const parser = new DOMParser()
-        const doc = parser.parseFromString(htmlText, 'text/html')
+        // Convertir todo el HTML generado por `chordFormat` a texto plano.
+        // Siempre convierte todas las secciones juntas cuando se llama sin argumento.
 
-        let plainText = ''
+        const convertSingle = (html) => {
+            const parser = new DOMParser()
+            const doc = parser.parseFromString(String(html), 'text/html')
 
-        const processNode = (node) => {
-            if (node.nodeType === 3) { // Nodo de texto
-                plainText += node.textContent
-            } else if (node.nodeType === 1) { // Nodo de elemento
-                if (node.classList.contains('chord')) {
-                    // Si es un chord, agregarlo en una línea separada
-                    plainText += `\n[${node.textContent}]\n`
-                } else if (node.tagName === 'P' || node.tagName === 'PRE') {
-                    // Procesar hijos
-                    node.childNodes.forEach(processNode)
-                    if (node.tagName === 'P') {
-                        plainText += '\n'
-                    }
-                } else {
-                    // Procesar otros elementos normalmente
-                    node.childNodes.forEach(processNode)
+            const linesOut = []
+
+            const processLineElement = (el) => {
+                let textLine = ''
+                const chordChars = []
+
+                const ensureChordLen = (len) => {
+                    while (chordChars.length < len) chordChars.push(' ')
                 }
+
+                const insertChordAt = (pos, chord) => {
+                    ensureChordLen(pos)
+                    for (let i = 0; i < chord.length; i++) {
+                        chordChars[pos + i] = chord[i]
+                    }
+                }
+
+                const walk = (node) => {
+                    if (node.nodeType === Node.TEXT_NODE) {
+                        const txt = node.textContent.replace(/\u00A0/g, ' ')
+                        textLine += txt
+                    } else if (node.nodeType === Node.ELEMENT_NODE) {
+                        const nodeEl = node
+                        if (nodeEl.classList && nodeEl.classList.contains('chord')) {
+                            const chord = nodeEl.textContent.trim()
+                            const pos = textLine.length
+                            insertChordAt(pos, chord)
+                        } else if (nodeEl.tagName === 'BR') {
+                            // ignore here, handled by structure
+                        } else {
+                            nodeEl.childNodes.forEach(walk)
+                        }
+                    }
+                }
+
+                el.childNodes.forEach(walk)
+
+                const chordLine = chordChars.join('').replace(/\s+$/g, '')
+                if (chordLine.trim()) {
+                    linesOut.push(chordLine)
+                }
+                linesOut.push(textLine.replace(/\s+$/g, ''))
             }
+
+            doc.body.childNodes.forEach((node) => {
+                if (node.nodeType === Node.ELEMENT_NODE && (node.tagName === 'P' || node.tagName === 'PRE')) {
+                    if (node.tagName === 'PRE') {
+                        if (node.querySelectorAll('p').length) {
+                            node.querySelectorAll('p').forEach(processLineElement)
+                        } else {
+                            processLineElement(node)
+                        }
+                    } else {
+                        processLineElement(node)
+                    }
+                } else if (node.nodeType === Node.TEXT_NODE) {
+                    const txt = node.textContent.trim()
+                    if (txt) linesOut.push(txt)
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                    if (node.childNodes.length) {
+                        node.childNodes.forEach((child) => {
+                            if (child.nodeType === Node.ELEMENT_NODE && (child.tagName === 'P' || child.tagName === 'PRE')) {
+                                processLineElement(child)
+                            } else if (child.nodeType === Node.ELEMENT_NODE) {
+                                processLineElement(child)
+                            } else if (child.nodeType === Node.TEXT_NODE) {
+                                const t = child.textContent.trim()
+                                if (t) linesOut.push(t)
+                            }
+                        })
+                    }
+                }
+            })
+
+            return linesOut.join('\n')
+                .replace(/\n{3,}/g, '\n\n')
+                .replace(/\t/g, '    ')
+                .trim()
         }
 
-        doc.body.childNodes.forEach(processNode)
+        // Siempre convertir todas las secciones juntas y unirlas con dos saltos de línea
+        const all = sections.map((section) => {
+            const chart = chordFormat(section.content, semitone, {
+                visibleChords: showChords,
+                visibleMetadata: showMetadata
+            })
+            const text = convertSingle(chart)
+            return `${section.title}\n${text}`
+        }).join('\n\n')
 
-        // Limpiar espacios en blanco excesivos
-        return plainText
-            .replace(/\n\n+/g, '\n') // Eliminar múltiples saltos de línea
-            .trim()
+        try {
+            const blob = new Blob([all], { type: 'text/plain;charset=utf-8' })
+            const url = URL.createObjectURL(blob)
+            const a = document.createElement('a')
+            a.href = url
+            const safeTitle = (title || 'song').replace(/[^a-z0-9_\- ]/gi, '')
+            a.download = `${safeTitle || 'song'}.txt`
+            document.body.appendChild(a)
+            a.click()
+            a.remove()
+            URL.revokeObjectURL(url)
+        } catch (e) {
+            console.error('No se pudo generar la descarga .txt', e)
+        }
     }
 
     function transposeChord(chord, amount) {
@@ -125,32 +205,52 @@ export function Preview({ title, artist, image, sections, links }) {
         appendQueryString("section", value)
     }
 
+    const renderSections = () => {
+        return sections.map((section) => {
+            const chart = chordFormat(section.content, semitone, {
+                visibleChords: showChords,
+                visibleMetadata: showMetadata
+            })
+            return (
+                <fieldset onClick={() => handleChangeSection(section.title)} className="mb-4 py-4 pt-6 px-4 border-2 rounded-md border-gray-200 print:break-inside-avoid" key={section.id}>
+                    <legend className="font-semibold flex items-center gap-2">
+                        <SectionIndicator sectionTitle={section.title} />
+                        {section.title}
+                    </legend>
+                    <div dangerouslySetInnerHTML={{ __html: chart }} />
+                </fieldset>
+            )
+        })
+    }
+
     return (
         <div className="pt-8 p-4">
-            <div className={`sticky print:relative grid grid-cols-[60px_1fr] items-center gap-4 z-20 top-0 left-0 w-full py-2 bg-white`}>
-                <div>
-                    {
-                        image ? <Image
-                            containerClassName="w-16 h-16 overflow-hidden flex items-center"
-                            className="w-full m-auto"
-                            src={image}
-                            alt={title}
-                        /> : <div className="w-16 h-16 bg-gray-200 border-2 border-black rounded-full"></div>
-                    }
-                </div>
-                <div className="overflow-hidden">
-                    <h4 title={artist} className="text-sm truncate">{artist}</h4>
-                    <h1 title={title} className="font-bold text-base sm:text-2xl uppercase">{title}</h1>
-                    <div className="flex gap-2 w-full overflow-x-scroll py-1 items-center">
+            <div className="sticky print:relative top-0 z-20 left-0 w-full bg-white mb-4">
+                <div className={`grid grid-cols-[60px_1fr] items-center gap-4 w-full py-2 `}>
+                    <div>
                         {
-                            links && links.map(({ id, title, url }) => (
-                                <a className="px-4 min-w-fit py-1 rounded-full bg-gray-200 text-xs" key={id} href={url} rel="noreferrer" target="_blank">{title}</a>
-                            ))
+                            image ? <Image
+                                containerClassName="w-16 h-16 overflow-hidden flex items-center"
+                                className="w-full m-auto"
+                                src={image}
+                                alt={title}
+                            /> : <div className="w-16 h-16 bg-gray-200 border-2 border-black rounded-full"></div>
                         }
+                    </div>
+                    <div className="overflow-hidden">
+                        <h4 title={artist} className="text-sm truncate">{artist}</h4>
+                        <h1 title={title} className="font-bold text-base sm:text-2xl uppercase">{title}</h1>
+                        <div className="flex gap-2 w-full overflow-x-scroll py-1 items-center">
+                            {
+                                links && links.map(({ id, title, url }) => (
+                                    <a className="px-4 min-w-fit py-1 rounded-full bg-gray-200 text-xs" key={id} href={url} rel="noreferrer" target="_blank">{title}</a>
+                                ))
+                            }
+                        </div>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
-                    <div className="my-4 print:hidden">
+                    <div className="my-2 print:hidden">
                         <ModalButton buttonChildren={<HiOutlineAdjustments size={24} />}>
                             <fieldset className="mb-4 flex flex-col gap-3 py-2 p-2 border rounded-md border-gray-200">
                                 <legend className="font-semibold text-center text-sm">Configurar vista</legend>
@@ -192,25 +292,22 @@ export function Preview({ title, artist, image, sections, links }) {
                             </fieldset>
                         </ModalButton>
                     </div>
-                    <Button className="print:hidden bg-black text-white font-semibold !w-full text-center" onPress={() => window.print()}>Imprimir</Button>
+                    <Button
+                        className="flex items-center gap-2 print:hidden bg-black text-white font-semibold justify-center"
+                        onPress={() => window.print()}>
+                        <FaPrint size={16} />
+                        <span className="hidden md:block">Imprimir</span>
+                    </Button>
+                    <Button
+                        className="flex items-center gap-2 print:hidden bg-black text-white font-semibold justify-center"
+                        onPress={() => htmlToPlainTextWithChords()}>
+                        <TbFileTypeTxt size={18} />
+                        <span className="hidden md:block">Descargat (.txt)</span>
+                    </Button>
                 </div>
             </div>
             {
-                sections.map((section) => {
-                    const chart = chordFormat(section.content, semitone, {
-                        visibleChords: showChords,
-                        visibleMetadata: showMetadata
-                    })
-                    return (
-                        <fieldset onClick={() => handleChangeSection(section.title)} className="mb-4 py-4 pt-6 px-4 border-2 rounded-md border-gray-200 print:break-inside-avoid" key={section.id}>
-                            <legend className="font-semibold flex items-center gap-2">
-                                <SectionIndicator sectionTitle={section.title} />
-                                {section.title}
-                            </legend>
-                            <div dangerouslySetInnerHTML={{ __html: chart }} />
-                        </fieldset>
-                    )
-                })
+                renderSections()
             }
         </div>
     )
