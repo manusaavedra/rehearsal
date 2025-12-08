@@ -31,7 +31,7 @@ export default function SongListComponent({ data = [], showButtonSetList = true,
         const setlistHandleClick = () => !isSelected ? handleAddSong(song) : handleRemoveSong(song)
 
         return (
-            <div className="relative grid grid-cols-[1fr_100px] border-b" key={id}>
+            <div className="relative grid grid-cols-[1fr_30px] border-b" key={id}>
                 <Link className="w-full grid grid-cols-[60px_1fr] gap-2 items-center" href={`/preview/${id}`}>
                     <picture className="w-[60px] h-[60px] overflow-hidden flex items-center">
                         <img src={image ? image : '/icon512_rounded.png'} alt={title} />
