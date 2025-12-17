@@ -52,19 +52,6 @@ export default function FormSongs({ song, mode = "create" }) {
         setSections(newSections)
     }
 
-    const handleAddSection = () => {
-        // guarda en una variable si hay algun elemento textarea focus
-
-        /*setSections((state) => [
-            ...state,
-            {
-                id: uuidv4(),
-                title: "",
-                content: ""
-            }
-        ])*/
-    }
-
     const handleAddLink = () => {
         setLinks((state) => [
             ...state,
@@ -284,6 +271,7 @@ export default function FormSongs({ song, mode = "create" }) {
                 {
                     sections.length > 0 && (
                         <Preview
+                            id={id.current}
                             title={title.value}
                             artist={artist.value}
                             image={image.value}

@@ -8,10 +8,11 @@ import ModalButton from "./ModalButton";
 import { HiOutlineAdjustments } from "react-icons/hi";
 import Image from "./Image";
 import { FaPrint } from "react-icons/fa"
-import { TbFileTypeTxt } from "react-icons/tb"
+import { TbFileTypeTxt, TbShare2 } from "react-icons/tb"
+import Swal from 'sweetalert2'
 import useBuildSearchParams from "@/hooks/useBuildSearchParams";
 
-export function Preview({ title, artist, image, sections, links }) {
+export function Preview({ id, title, artist, image, sections, links }) {
     const [semitone, setSemitone] = useState(0)
     const [showMetadata, setShowMetadata] = useState(true)
     const [showChords, setShowChords] = useState(true)
@@ -21,9 +22,7 @@ export function Preview({ title, artist, image, sections, links }) {
 
     useEffect(() => {
         const semitone = searchParams.get("semitone")
-        const section = searchParams.get("section")
-
-        //setSemitone(parseInt(semitone ?? 0))
+        setSemitone(parseInt(semitone ?? 0))
     }, [searchParams])
 
     const replaceNumbersWithSuperscripts = (text) => {
@@ -191,6 +190,30 @@ export function Preview({ title, artist, image, sections, links }) {
         }
     }
 
+    const sharePreview = async () => {
+        const songIdFinal = id
+
+        if (!songIdFinal) {
+            Swal.fire({ icon: 'info', text: 'La canción no tiene ID. Guarda la canción antes de compartir.' })
+            return
+        }
+
+        const previewUrl = `${window.location.origin}/preview/${songIdFinal}`
+
+        try {
+            if (navigator.share) {
+                await navigator.share({ title: `${title ?? 'Preview'}`, url: previewUrl })
+                return
+            }
+
+            await navigator.clipboard.writeText(previewUrl)
+            Swal.fire({ icon: 'success', text: 'Enlace copiado al portapapeles', timer: 1400, showConfirmButton: false })
+        } catch (e) {
+            // fallback: open link in new tab
+            window.open(previewUrl, '_blank')
+        }
+    }
+
     function transposeChord(chord, amount) {
         const scale = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]
         const normalizeMap = { "Cb": "B", "Db": "C#", "Eb": "D#", "Fb": "E", "Gb": "F#", "Ab": "G#", "Bb": "A#", "E#": "F", "B#": "C" }
@@ -300,6 +323,12 @@ export function Preview({ title, artist, image, sections, links }) {
                         onPress={() => window.print()}>
                         <FaPrint size={16} />
                         <span className="hidden md:block">Imprimir</span>
+                    </Button>
+                    <Button
+                        className="flex items-center gap-2 print:hidden bg-black text-white font-semibold justify-center"
+                        onPress={() => sharePreview()}>
+                        <TbShare2 size={18} />
+                        <span className="hidden md:block">Compartir</span>
                     </Button>
                     <Button
                         className="flex items-center gap-2 print:hidden bg-black text-white font-semibold justify-center"
