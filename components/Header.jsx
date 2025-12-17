@@ -10,7 +10,7 @@ export default function Header({ children }) {
         <header className="bg-gray-50 shadow-sm flex items-center justify-between px-4 py-2">
             <div className="flex flex-col">
                 <Link href="/" prefetch className="text-2xl font-bold">Rehearsal</Link>
-                <p className="text-xs text-gray-600">made by <a className="font-semibold" href="https://www.instagram.com/manukeyboard/">@manukeaboard</a> </p>
+                <p className="text-xs text-gray-600">made by <a className="font-semibold" href="https://www.instagram.com/manukeyboard/">@manukeyboard</a> </p>
             </div>
             {children}
             {/*
