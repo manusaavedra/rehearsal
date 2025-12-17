@@ -29,15 +29,40 @@ export default function FormSongs({ song, mode = "create" }) {
     const artist = useInput(song?.artist || "")
     const image = useInput(song?.image || "")
 
+    const handleAddSectionBefore = (index) => {
+        const newSection = {
+            id: uuidv4(),
+            title: "",
+            content: ""
+        }
+        const newSections = sections.slice()
+        newSections.splice(index, 0, newSection)
+        setSections(newSections)
+    }
+
+    const handleAddSectionAfter = (index) => {
+        const newSection = {
+            id: uuidv4(),
+            title: "",
+            content: ""
+        }
+
+        const newSections = sections.slice()
+        newSections.splice(index + 1, 0, newSection)
+        setSections(newSections)
+    }
+
     const handleAddSection = () => {
-        setSections((state) => [
+        // guarda en una variable si hay algun elemento textarea focus
+
+        /*setSections((state) => [
             ...state,
             {
                 id: uuidv4(),
                 title: "",
                 content: ""
             }
-        ])
+        ])*/
     }
 
     const handleAddLink = () => {
@@ -210,8 +235,8 @@ export default function FormSongs({ song, mode = "create" }) {
                 <ReactSortable list={sections} setList={setSections} disabled={!disabled}>
                     {
                         sections.map((section, index) => (
-                            <section className="border p-2 rounded-md shadow-md mb-4" key={section.id}>
-
+                            <section className="border p-2 rounded-md shadow-md mb-4 group" key={section.id}>
+                                <span>key={section.id}</span>
                                 <div className="flex items-center mb-2 justify-between">
                                     <select
                                         disabled={disabled}
@@ -244,13 +269,16 @@ export default function FormSongs({ song, mode = "create" }) {
                                     value={section.content}
                                     rows="6" cols="50"
                                 />
+                                <div className="flex items-center gap-2 opacity-0  group-focus-within:opacity-100  group-hover:opacity-100 transition-opacity duration-150">
+                                    <button onClick={() => handleAddSectionBefore(index)} className="bg-gray-200 w-full py-2 text-xs">Nueva sección antes</button>
+                                    <button onClick={() => handleAddSectionAfter(index)} className="bg-gray-200 w-full py-2 text-xs">Nueva sección después</button>
+                                </div>
                             </section>
                         ))
                     }
                 </ReactSortable>
                 <div className="sticky bottom-4 flex items-center gap-4">
-                    <button className="bg-gray-800 text-white w-full py-2" onClick={handleAddSection}>Agregar sección</button>
-                    <FetchButton className="bg-blue-500 text-white w-full py-2" onClick={handleSave}>Guardar</FetchButton>
+                    <FetchButton className="bg-black text-white w-full py-3" onClick={handleSave}>Guardar</FetchButton>
                 </div>
             </div>
             <section className="h-full hidden sm:block w-full p-4">

@@ -73,7 +73,7 @@ export default function Editor(props) {
                     }
                 }}
             />
-            <div className="absolute bottom-4 right-2 flex items-center gap-2">
+            <div className="md:hidden absolute bottom-4 right-2 flex items-center gap-2">
                 <Button
                     className="w-6 h-6 p-0 font-semibold rounded-full grid place-items-center"
                     onPress={() => setTextEditor("[")}
