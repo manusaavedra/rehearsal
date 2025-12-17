@@ -236,7 +236,6 @@ export default function FormSongs({ song, mode = "create" }) {
                     {
                         sections.map((section, index) => (
                             <section className="border p-2 rounded-md shadow-md mb-4 group" key={section.id}>
-                                <span>key={section.id}</span>
                                 <div className="flex items-center mb-2 justify-between">
                                     <select
                                         disabled={disabled}
